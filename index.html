@@ -28,16 +28,12 @@ body { padding: 2rem; }
   <div id="plan-details" style="display:none;">
     <div class="columns">
       <div class="column">
-        <label class="label" for="included">Included Services Used</label>
-        <div class="select is-multiple is-fullwidth select-container">
-          <select id="included" multiple size="8"></select>
-        </div>
+        <label class="label">Included Services Used</label>
+        <div id="included-container" class="select-container"></div>
       </div>
       <div class="column">
-        <label class="label" for="optional">Optional Services Received</label>
-        <div class="select is-multiple is-fullwidth select-container">
-          <select id="optional" multiple size="8"></select>
-        </div>
+        <label class="label">Optional Services Received</label>
+        <div id="optional-container" class="select-container"></div>
       </div>
     </div>
 
@@ -60,8 +56,8 @@ body { padding: 2rem; }
 let plans = [];
 let currentPlan = null;
 const planSelect = document.getElementById('plan-select');
-const includedSelect = document.getElementById('included');
-const optionalSelect = document.getElementById('optional');
+const includedContainer = document.getElementById('included-container');
+const optionalContainer = document.getElementById('optional-container');
 const additionalInput = document.getElementById('additional');
 const withPlanEl = document.getElementById('with-plan');
 const withoutPlanEl = document.getElementById('without-plan');
@@ -71,29 +67,56 @@ function formatMoney(value){
   return value.toFixed(2);
 }
 
-function populateSelect(selectEl, items){
-  selectEl.innerHTML = '';
-  items.forEach((svc, idx) => {
+function populateServices(container, services, cls){
+  container.innerHTML = '';
+  services.forEach((svc, idx) => {
     if (isNaN(svc.retailPrice) || isNaN(svc.planPrice)) return; // skip invalid entries
-    const opt = document.createElement('option');
-    opt.value = idx;
-    opt.textContent = svc.name + ` ($${svc.retailPrice})`;
-    selectEl.appendChild(opt);
+    const field = document.createElement('div');
+    field.className = 'field is-flex is-justify-content-space-between is-align-items-center mb-1';
+    const label = document.createElement('span');
+    label.textContent = `${svc.name} ($${svc.retailPrice})`;
+    const input = document.createElement('input');
+    input.type = 'number';
+    input.min = 0;
+    input.max = 9;
+    input.value = 0;
+    input.dataset.index = idx;
+    input.className = `${cls}-qty input`;
+    input.style.width = '4rem';
+    input.addEventListener('input', calculate);
+    field.appendChild(label);
+    field.appendChild(input);
+    container.appendChild(field);
   });
 }
 
+
 function calculate(){
   if(!currentPlan) return;
-  const includedSelected = Array.from(includedSelect.selectedOptions).map(o => currentPlan.includedServices[o.value]);
-  const optionalSelected = Array.from(optionalSelect.selectedOptions).map(o => currentPlan.optionalServices[o.value]);
   const additional = parseFloat(additionalInput.value) || 0;
 
+  const includedInputs = includedContainer.querySelectorAll('.included-qty');
+  const optionalInputs = optionalContainer.querySelectorAll('.optional-qty');
+
   const costWithPlan = currentPlan.annualCost +
-    optionalSelected.reduce((sum, svc) => sum + (parseFloat(svc.planPrice)||0), 0) +
+    Array.from(optionalInputs).reduce((sum, input) => {
+      const qty = parseInt(input.value) || 0;
+      const svc = currentPlan.optionalServices[input.dataset.index];
+      return sum + qty * (parseFloat(svc.planPrice) || 0);
+    }, 0) +
     additional;
 
-  const costWithout = includedSelected.reduce((sum, svc) => sum + (parseFloat(svc.retailPrice)||0), 0) +
-    optionalSelected.reduce((sum, svc) => sum + (parseFloat(svc.retailPrice)||0), 0) +
+  const costWithout =
+    Array.from(includedInputs).reduce((sum, input) => {
+      const qty = parseInt(input.value) || 0;
+      const svc = currentPlan.includedServices[input.dataset.index];
+      return sum + qty * (parseFloat(svc.retailPrice) || 0);
+    }, 0) +
+    Array.from(optionalInputs).reduce((sum, input) => {
+      const qty = parseInt(input.value) || 0;
+      const svc = currentPlan.optionalServices[input.dataset.index];
+      return sum + qty * (parseFloat(svc.retailPrice) || 0);
+    }, 0) +
     additional;
 
   withPlanEl.textContent = formatMoney(costWithPlan);
@@ -106,10 +129,8 @@ function onPlanChange(){
   if(idx === '') return;
   currentPlan = plans[idx];
   document.getElementById('plan-details').style.display = 'block';
-  populateSelect(includedSelect, currentPlan.includedServices);
-  populateSelect(optionalSelect, currentPlan.optionalServices);
-  includedSelect.selectedIndex = -1;
-  optionalSelect.selectedIndex = -1;
+  populateServices(includedContainer, currentPlan.includedServices, 'included');
+  populateServices(optionalContainer, currentPlan.optionalServices, 'optional');
   additionalInput.value = 0;
   calculate();
 }
@@ -127,8 +148,6 @@ fetch('data/plans.json')
   });
 
 planSelect.addEventListener('change', onPlanChange);
-includedSelect.addEventListener('change', calculate);
-optionalSelect.addEventListener('change', calculate);
 additionalInput.addEventListener('input', calculate);
 </script>
 </body>
