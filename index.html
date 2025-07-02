@@ -79,7 +79,8 @@ function populateServices(container, services, cls){
     input.type = 'number';
     input.min = 0;
     input.max = 9;
-    input.value = 0;
+    input.value = cls === 'included' ? 1 : 0;
+    input.addEventListener('focus', e => e.target.select());
     input.dataset.index = idx;
     input.className = `${cls}-qty input`;
     input.style.width = '4rem';
@@ -150,6 +151,7 @@ fetch('data/plans.json')
 
 planSelect.addEventListener('change', onPlanChange);
 additionalInput.addEventListener('input', calculate);
+additionalInput.addEventListener('focus', e => e.target.select());
 </script>
 </body>
 </html>
