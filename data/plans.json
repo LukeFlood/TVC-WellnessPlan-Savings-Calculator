@@ -1,0 +1,748 @@
+{
+  "plans": [
+    {
+      "planName": "Puppy",
+      "annualCost": 626.0,
+      "percentDiscount": 0.05,
+      "includedServices": [
+        {
+          "name": "WP Comprehensive Physical Exam: Biannual",
+          "retailPrice": 69.0,
+          "planPrice": 0.0
+        },
+        {
+          "name": "WP Additional Office Visit",
+          "retailPrice": 69.0,
+          "planPrice": 0.0
+        },
+        {
+          "name": "WP DHPP/ DHLPP/ Lepto",
+          "retailPrice": 49.0,
+          "planPrice": 0.0
+        },
+        {
+          "name": "WP Bordetella",
+          "retailPrice": 41.0,
+          "planPrice": 0.0
+        },
+        {
+          "name": "WP Rabies",
+          "retailPrice": 35.0,
+          "planPrice": 0.0
+        },
+        {
+          "name": "WP Deworming Treatment",
+          "retailPrice": 26.0,
+          "planPrice": 0.0
+        },
+        {
+          "name": "WP Fecal Float",
+          "retailPrice": 41.0,
+          "planPrice": 0.0
+        },
+        {
+          "name": "WP 4dx Test",
+          "retailPrice": 53.0,
+          "planPrice": 0.0
+        },
+        {
+          "name": "WP Nail Trim",
+          "retailPrice": 25.0,
+          "planPrice": 0.0
+        }
+      ],
+      "optionalServices": [
+        {
+          "name": "nan",
+          "retailPrice": null,
+          "planPrice": null
+        },
+        {
+          "name": "OPTIONAL ITEMS",
+          "retailPrice": null,
+          "planPrice": null
+        },
+        {
+          "name": "WP Additional Office Visit",
+          "retailPrice": 69.0,
+          "planPrice": 67.0
+        },
+        {
+          "name": "WP DHPP/ DHLPP/ Lepto",
+          "retailPrice": 49.0,
+          "planPrice": 47.0
+        },
+        {
+          "name": "WP Bordetella",
+          "retailPrice": 41.0,
+          "planPrice": 35.0
+        },
+        {
+          "name": "WP Influenza",
+          "retailPrice": 64.0,
+          "planPrice": 61.0
+        },
+        {
+          "name": "WP Lyme",
+          "retailPrice": 59.0,
+          "planPrice": 56.0
+        },
+        {
+          "name": "WP Radiographs",
+          "retailPrice": 248.0,
+          "planPrice": 229.0
+        },
+        {
+          "name": "WP Canine Neuter",
+          "retailPrice": 375.0,
+          "planPrice": 339.0
+        },
+        {
+          "name": "WP Canine Spay",
+          "retailPrice": 497.0,
+          "planPrice": 449.0
+        }
+      ]
+    },
+    {
+      "planName": "Canine Foundation",
+      "annualCost": 566.0,
+      "percentDiscount": 0.1,
+      "includedServices": [
+        {
+          "name": "WP Comprehensive Physical Exam: Biannual",
+          "retailPrice": 69.0,
+          "planPrice": 0.0
+        },
+        {
+          "name": "WP Additional Office Visit",
+          "retailPrice": 69.0,
+          "planPrice": 0.0
+        },
+        {
+          "name": "WP DHPP/ DHLPP/ Lepto",
+          "retailPrice": 49.0,
+          "planPrice": 0.0
+        },
+        {
+          "name": "WP Bordetella",
+          "retailPrice": 41.0,
+          "planPrice": 0.0
+        },
+        {
+          "name": "WP Rabies",
+          "retailPrice": 35.0,
+          "planPrice": 0.0
+        },
+        {
+          "name": "WP Fecal Float",
+          "retailPrice": 41.0,
+          "planPrice": 0.0
+        },
+        {
+          "name": "WP 4dx Test",
+          "retailPrice": 53.0,
+          "planPrice": 0.0
+        },
+        {
+          "name": "WP Blood Chemistry",
+          "retailPrice": 122.0,
+          "planPrice": 0.0
+        },
+        {
+          "name": "WP Complete Blood Cell Count",
+          "retailPrice": 52.0,
+          "planPrice": 0.0
+        },
+        {
+          "name": "Electrolytes",
+          "retailPrice": 37.0,
+          "planPrice": 0.0
+        },
+        {
+          "name": "WP Nail Trim",
+          "retailPrice": 25.0,
+          "planPrice": 0.0
+        }
+      ],
+      "optionalServices": [
+        {
+          "name": "nan",
+          "retailPrice": null,
+          "planPrice": null
+        },
+        {
+          "name": "OPTIONAL ITEMS",
+          "retailPrice": null,
+          "planPrice": null
+        },
+        {
+          "name": "WP Additional Office Visit",
+          "retailPrice": 69.0,
+          "planPrice": 67.0
+        },
+        {
+          "name": "WP DHPP/ DHLPP/ Lepto",
+          "retailPrice": 49.0,
+          "planPrice": 47.0
+        },
+        {
+          "name": "WP Bordetella",
+          "retailPrice": 41.0,
+          "planPrice": 35.0
+        },
+        {
+          "name": "WP Influenza",
+          "retailPrice": 64.0,
+          "planPrice": 61.0
+        },
+        {
+          "name": "WP Lyme",
+          "retailPrice": 59.0,
+          "planPrice": 56.0
+        },
+        {
+          "name": "WP Canine Neuter",
+          "retailPrice": 375.0,
+          "planPrice": 339.0
+        },
+        {
+          "name": "WP Canine Spay",
+          "retailPrice": 497.0,
+          "planPrice": 508.0
+        },
+        {
+          "name": "WP Dental Radiographs",
+          "retailPrice": 125.0,
+          "planPrice": 116.0
+        },
+        {
+          "name": "WP Dental Prophylaxis",
+          "retailPrice": 606.0,
+          "planPrice": 449.0
+        },
+        {
+          "name": "WP Radiographs",
+          "retailPrice": 248.0,
+          "planPrice": 229.0
+        },
+        {
+          "name": "WP Urinalysis",
+          "retailPrice": 68.0,
+          "planPrice": 65.0
+        },
+        {
+          "name": "WP Blood Chemistry",
+          "retailPrice": 122.0,
+          "planPrice": 116.0
+        },
+        {
+          "name": "WP Complete Blood Cell Count",
+          "retailPrice": 52.0,
+          "planPrice": 51.0
+        },
+        {
+          "name": "Electrolytes",
+          "retailPrice": 37.0,
+          "planPrice": 34.0
+        }
+      ]
+    },
+    {
+      "planName": "Canine Ultimate",
+      "annualCost": 878.0,
+      "percentDiscount": 0.15,
+      "includedServices": [
+        {
+          "name": "WP Comprehensive Physical Exam: Biannual",
+          "retailPrice": 69.0,
+          "planPrice": 0.0
+        },
+        {
+          "name": "WP Additional Office Visit",
+          "retailPrice": 69.0,
+          "planPrice": 0.0
+        },
+        {
+          "name": "WP DHPP/ DHLPP/ Lepto",
+          "retailPrice": 49.0,
+          "planPrice": 0.0
+        },
+        {
+          "name": "WP Bordetella",
+          "retailPrice": 41.0,
+          "planPrice": 0.0
+        },
+        {
+          "name": "WP Rabies",
+          "retailPrice": 35.0,
+          "planPrice": 0.0
+        },
+        {
+          "name": "WP Fecal Float",
+          "retailPrice": 41.0,
+          "planPrice": 0.0
+        },
+        {
+          "name": "WP 4dx Test",
+          "retailPrice": 53.0,
+          "planPrice": 0.0
+        },
+        {
+          "name": "WP Urinalysis",
+          "retailPrice": 68.0,
+          "planPrice": 0.0
+        },
+        {
+          "name": "WP Blood Chemistry (Senior Chem17/18)",
+          "retailPrice": 149.0,
+          "planPrice": 0.0
+        },
+        {
+          "name": "WP Complete Blood Cell Count",
+          "retailPrice": 52.0,
+          "planPrice": 0.0
+        },
+        {
+          "name": "Electrolytes",
+          "retailPrice": 35.0,
+          "planPrice": 0.0
+        },
+        {
+          "name": "WP Nail Trim",
+          "retailPrice": 25.0,
+          "planPrice": 0.0
+        }
+      ],
+      "optionalServices": [
+        {
+          "name": "nan",
+          "retailPrice": null,
+          "planPrice": null
+        },
+        {
+          "name": "OPTIONAL ITEMS",
+          "retailPrice": null,
+          "planPrice": null
+        },
+        {
+          "name": "WP Additional Office Visit",
+          "retailPrice": 69.0,
+          "planPrice": 67.0
+        },
+        {
+          "name": "WP DHPP/ DHLPP/ Lepto",
+          "retailPrice": 49.0,
+          "planPrice": 47.0
+        },
+        {
+          "name": "WP Bordetella",
+          "retailPrice": 41.0,
+          "planPrice": 35.0
+        },
+        {
+          "name": "WP Influenza",
+          "retailPrice": 64.0,
+          "planPrice": 61.0
+        },
+        {
+          "name": "WP Lyme",
+          "retailPrice": 59.0,
+          "planPrice": 56.0
+        },
+        {
+          "name": "WP Canine Neuter",
+          "retailPrice": 375.0,
+          "planPrice": 339.0
+        },
+        {
+          "name": "WP Canine Spay",
+          "retailPrice": 497.0,
+          "planPrice": 508.0
+        },
+        {
+          "name": "WP Dental Radiographs",
+          "retailPrice": 125.0,
+          "planPrice": 116.0
+        },
+        {
+          "name": "WP Dental Prophylaxis",
+          "retailPrice": 606.0,
+          "planPrice": 449.0
+        },
+        {
+          "name": "WP Complete Blood Cell Count",
+          "retailPrice": 52.0,
+          "planPrice": 51.0
+        },
+        {
+          "name": "WP Blood Chemistry (Senior Chem17/18)",
+          "retailPrice": 149.0,
+          "planPrice": 137.0
+        },
+        {
+          "name": "Electrolytes",
+          "retailPrice": 35.0,
+          "planPrice": 34.0
+        },
+        {
+          "name": "WP Radiographs",
+          "retailPrice": 248.0,
+          "planPrice": 229.0
+        }
+      ]
+    },
+    {
+      "planName": "Kitten",
+      "annualCost": 602.0,
+      "percentDiscount": 0.05,
+      "includedServices": [
+        {
+          "name": "WP Comprehensive Physical Exam: Biannual",
+          "retailPrice": 69.0,
+          "planPrice": 0.0
+        },
+        {
+          "name": "WP Additional Office Visit",
+          "retailPrice": 69.0,
+          "planPrice": 0.0
+        },
+        {
+          "name": "WP FVRCP",
+          "retailPrice": 37.0,
+          "planPrice": 0.0
+        },
+        {
+          "name": "WP FELV",
+          "retailPrice": 45.0,
+          "planPrice": 0.0
+        },
+        {
+          "name": "WP Rabies",
+          "retailPrice": 35.0,
+          "planPrice": 0.0
+        },
+        {
+          "name": "WP Deworming Treatment",
+          "retailPrice": 26.0,
+          "planPrice": 0.0
+        },
+        {
+          "name": "WP Fecal Float",
+          "retailPrice": 41.0,
+          "planPrice": 0.0
+        },
+        {
+          "name": "IDEXX: Feline Combo",
+          "retailPrice": 47.0,
+          "planPrice": 0.0
+        },
+        {
+          "name": "WP Nail Trim",
+          "retailPrice": 25.0,
+          "planPrice": 0.0
+        }
+      ],
+      "optionalServices": [
+        {
+          "name": "nan",
+          "retailPrice": null,
+          "planPrice": null
+        },
+        {
+          "name": "OPTIONAL ITEMS",
+          "retailPrice": null,
+          "planPrice": null
+        },
+        {
+          "name": "WP Additional Office Visit",
+          "retailPrice": 69.0,
+          "planPrice": 67.0
+        },
+        {
+          "name": "WP FVRCP",
+          "retailPrice": 37.0,
+          "planPrice": 35.0
+        },
+        {
+          "name": "WP Feline Neuter",
+          "retailPrice": 236.0,
+          "planPrice": 216.0
+        },
+        {
+          "name": "WP Feline Spay",
+          "retailPrice": 337.0,
+          "planPrice": 316.0
+        },
+        {
+          "name": "WP Radiographs",
+          "retailPrice": 248.0,
+          "planPrice": 229.0
+        }
+      ]
+    },
+    {
+      "planName": "Feline Foundation",
+      "annualCost": 554.0,
+      "percentDiscount": 0.1,
+      "includedServices": [
+        {
+          "name": "WP Comprehensive Physical Exam: Biannual",
+          "retailPrice": 69.0,
+          "planPrice": 0.0
+        },
+        {
+          "name": "WP Additional Office Visit",
+          "retailPrice": 69.0,
+          "planPrice": 0.0
+        },
+        {
+          "name": "WP FVRCP",
+          "retailPrice": 37.0,
+          "planPrice": 0.0
+        },
+        {
+          "name": "WP FELV",
+          "retailPrice": 45.0,
+          "planPrice": 0.0
+        },
+        {
+          "name": "WP Rabies",
+          "retailPrice": 35.0,
+          "planPrice": 0.0
+        },
+        {
+          "name": "WP Fecal Float",
+          "retailPrice": 41.0,
+          "planPrice": 0.0
+        },
+        {
+          "name": "IDEXX: Feline Combo",
+          "retailPrice": 47.0,
+          "planPrice": 0.0
+        },
+        {
+          "name": "WP Complete Blood Cell Count",
+          "retailPrice": 52.0,
+          "planPrice": 0.0
+        },
+        {
+          "name": "WP Blood Chemistry",
+          "retailPrice": 122.0,
+          "planPrice": 0.0
+        },
+        {
+          "name": "Electrolytes",
+          "retailPrice": 37.0,
+          "planPrice": 0.0
+        },
+        {
+          "name": "WP Nail Trim",
+          "retailPrice": 25.0,
+          "planPrice": 0.0
+        }
+      ],
+      "optionalServices": [
+        {
+          "name": "nan",
+          "retailPrice": null,
+          "planPrice": null
+        },
+        {
+          "name": "OPTIONAL ITEMS",
+          "retailPrice": null,
+          "planPrice": null
+        },
+        {
+          "name": "WP Additional Office Visit",
+          "retailPrice": 69.0,
+          "planPrice": 67.0
+        },
+        {
+          "name": "WP FVRCP",
+          "retailPrice": 37.0,
+          "planPrice": 35.0
+        },
+        {
+          "name": "WP FELV",
+          "retailPrice": 45.0,
+          "planPrice": 43.0
+        },
+        {
+          "name": "WP Feline Neuter",
+          "retailPrice": 236.0,
+          "planPrice": 216.0
+        },
+        {
+          "name": "WP Feline Spay",
+          "retailPrice": 337.0,
+          "planPrice": 343.0
+        },
+        {
+          "name": "WP Dental Radiographs",
+          "retailPrice": 125.0,
+          "planPrice": 116.0
+        },
+        {
+          "name": "WP Dental Prophylaxis",
+          "retailPrice": 606.0,
+          "planPrice": 449.0
+        },
+        {
+          "name": "WP Complete Blood Cell Count",
+          "retailPrice": 52.0,
+          "planPrice": 51.0
+        },
+        {
+          "name": "WP Blood Chemistry",
+          "retailPrice": 122.0,
+          "planPrice": 116.0
+        },
+        {
+          "name": "Electrolytes",
+          "retailPrice": 37.0,
+          "planPrice": 34.0
+        },
+        {
+          "name": "WP Radiographs",
+          "retailPrice": 248.0,
+          "planPrice": 229.0
+        },
+        {
+          "name": "WP Urinalysis",
+          "retailPrice": 68.0,
+          "planPrice": 65.0
+        }
+      ]
+    },
+    {
+      "planName": "Feline Ultimate",
+      "annualCost": 878.0,
+      "percentDiscount": 0.15,
+      "includedServices": [
+        {
+          "name": "WP Comprehensive Physical Exam: Biannual",
+          "retailPrice": 69.0,
+          "planPrice": 0.0
+        },
+        {
+          "name": "WP Additional Office Visit",
+          "retailPrice": 69.0,
+          "planPrice": 0.0
+        },
+        {
+          "name": "WP FVRCP",
+          "retailPrice": 37.0,
+          "planPrice": 0.0
+        },
+        {
+          "name": "WP FELV",
+          "retailPrice": 45.0,
+          "planPrice": 0.0
+        },
+        {
+          "name": "WP Rabies",
+          "retailPrice": 35.0,
+          "planPrice": 0.0
+        },
+        {
+          "name": "WP Fecal Float",
+          "retailPrice": 41.0,
+          "planPrice": 0.0
+        },
+        {
+          "name": "IDEXX: Feline Combo",
+          "retailPrice": 47.0,
+          "planPrice": 0.0
+        },
+        {
+          "name": "WP Urinalysis",
+          "retailPrice": 68.0,
+          "planPrice": 0.0
+        },
+        {
+          "name": "WP Complete Blood Cell Count",
+          "retailPrice": 52.0,
+          "planPrice": 0.0
+        },
+        {
+          "name": "WP Blood Chemistry (Senior Chem17/18)",
+          "retailPrice": 149.0,
+          "planPrice": 0.0
+        },
+        {
+          "name": "Electrolytes",
+          "retailPrice": 37.0,
+          "planPrice": 0.0
+        },
+        {
+          "name": "WP Nail Trim",
+          "retailPrice": 25.0,
+          "planPrice": 0.0
+        }
+      ],
+      "optionalServices": [
+        {
+          "name": "nan",
+          "retailPrice": null,
+          "planPrice": null
+        },
+        {
+          "name": "OPTIONAL ITEMS",
+          "retailPrice": null,
+          "planPrice": null
+        },
+        {
+          "name": "WP Additional Office Visit",
+          "retailPrice": 69.0,
+          "planPrice": 67.0
+        },
+        {
+          "name": "WP FVRCP",
+          "retailPrice": 37.0,
+          "planPrice": 35.0
+        },
+        {
+          "name": "WP FELV",
+          "retailPrice": 45.0,
+          "planPrice": 43.0
+        },
+        {
+          "name": "WP Feline Neuter",
+          "retailPrice": 236.0,
+          "planPrice": 216.0
+        },
+        {
+          "name": "WP Feline Spay",
+          "retailPrice": 337.0,
+          "planPrice": 343.0
+        },
+        {
+          "name": "WP Dental Radiographs",
+          "retailPrice": 125.0,
+          "planPrice": 116.0
+        },
+        {
+          "name": "WP Dental Prophylaxis",
+          "retailPrice": 606.0,
+          "planPrice": 449.0
+        },
+        {
+          "name": "WP Complete Blood Cell Count",
+          "retailPrice": 52.0,
+          "planPrice": 51.0
+        },
+        {
+          "name": "WP Blood Chemistry (Senior Chem17/18)",
+          "retailPrice": 149.0,
+          "planPrice": 137.0
+        },
+        {
+          "name": "Electrolytes",
+          "retailPrice": 35.0,
+          "planPrice": 34.0
+        }
+      ]
+    }
+  ]
+}
