@@ -53,16 +53,6 @@
       ],
       "optionalServices": [
         {
-          "name": "nan",
-          "retailPrice": NaN,
-          "planPrice": NaN
-        },
-        {
-          "name": "OPTIONAL ITEMS",
-          "retailPrice": NaN,
-          "planPrice": NaN
-        },
-        {
           "name": "WP Additional Office Visit",
           "retailPrice": 69.0,
           "planPrice": 67.0
@@ -166,16 +156,6 @@
         }
       ],
       "optionalServices": [
-        {
-          "name": "nan",
-          "retailPrice": NaN,
-          "planPrice": NaN
-        },
-        {
-          "name": "OPTIONAL ITEMS",
-          "retailPrice": NaN,
-          "planPrice": NaN
-        },
         {
           "name": "WP Additional Office Visit",
           "retailPrice": 69.0,
@@ -316,16 +296,6 @@
       ],
       "optionalServices": [
         {
-          "name": "nan",
-          "retailPrice": NaN,
-          "planPrice": NaN
-        },
-        {
-          "name": "OPTIONAL ITEMS",
-          "retailPrice": NaN,
-          "planPrice": NaN
-        },
-        {
           "name": "WP Additional Office Visit",
           "retailPrice": 69.0,
           "planPrice": 67.0
@@ -445,16 +415,6 @@
       ],
       "optionalServices": [
         {
-          "name": "nan",
-          "retailPrice": NaN,
-          "planPrice": NaN
-        },
-        {
-          "name": "OPTIONAL ITEMS",
-          "retailPrice": NaN,
-          "planPrice": NaN
-        },
-        {
           "name": "WP Additional Office Visit",
           "retailPrice": 69.0,
           "planPrice": 67.0
@@ -543,16 +503,6 @@
         }
       ],
       "optionalServices": [
-        {
-          "name": "nan",
-          "retailPrice": NaN,
-          "planPrice": NaN
-        },
-        {
-          "name": "OPTIONAL ITEMS",
-          "retailPrice": NaN,
-          "planPrice": NaN
-        },
         {
           "name": "WP Additional Office Visit",
           "retailPrice": 69.0,
@@ -682,16 +632,6 @@
         }
       ],
       "optionalServices": [
-        {
-          "name": "nan",
-          "retailPrice": NaN,
-          "planPrice": NaN
-        },
-        {
-          "name": "OPTIONAL ITEMS",
-          "retailPrice": NaN,
-          "planPrice": NaN
-        },
         {
           "name": "WP Additional Office Visit",
           "retailPrice": 69.0,
