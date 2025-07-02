@@ -38,7 +38,7 @@ body { padding: 2rem; }
     </div>
 
     <div class="field">
-      <label class="label" for="additional">Additional Spend Not Covered ($)</label>
+      <label class="label" for="additional">Outside of Plan ($)</label>
       <div class="control">
         <input class="input" type="number" id="additional" min="0" step="0.01" value="0">
       </div>
@@ -94,6 +94,7 @@ function populateServices(container, services, cls){
 function calculate(){
   if(!currentPlan) return;
   const additional = parseFloat(additionalInput.value) || 0;
+  const discountedAdditional = additional * (1 - (currentPlan.percentDiscount || 0));
 
   const includedInputs = includedContainer.querySelectorAll('.included-qty');
   const optionalInputs = optionalContainer.querySelectorAll('.optional-qty');
@@ -104,7 +105,7 @@ function calculate(){
       const svc = currentPlan.optionalServices[input.dataset.index];
       return sum + qty * (parseFloat(svc.planPrice) || 0);
     }, 0) +
-    additional;
+    discountedAdditional;
 
   const costWithout =
     Array.from(includedInputs).reduce((sum, input) => {
