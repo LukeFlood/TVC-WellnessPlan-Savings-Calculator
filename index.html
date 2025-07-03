@@ -6,44 +6,79 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
 <link rel="stylesheet" href="print.css" media="print">
 <style>
-body { padding: 2rem; }
-.select-container { margin-top: 1rem; }
-.output { margin-top: 2rem; }
+/* --- Base Layout & Structure --- */
+body {
+  padding: 2rem;
+}
+
+.select-container {
+  margin-top: 1rem;
+}
+
+.output {
+  margin-top: 2rem;
+}
+
 .service-list .field.is-flex span {
   flex: 1;
 }
+
 .service-list .field.is-flex input {
   width: 5rem;
   margin-left: 0.5rem;
 }
+
 .no-spinner::-webkit-inner-spin-button,
 .no-spinner::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+
 .no-spinner {
   -moz-appearance: textfield;
 }
+
+/* FIX: Explicitly define the columns layout to prevent stacking */
+.columns {
+    display: flex;
+    margin-left: -0.75rem;
+    margin-right: -0.75rem;
+    margin-top: -0.75rem;
+}
+.columns:not(:last-child) {
+    margin-bottom: 0.75rem;
+}
+.column {
+    display: block;
+    flex-basis: 0;
+    flex-grow: 1;
+    flex-shrink: 1;
+    padding: 0.75rem;
+}
+
 @media screen {
-  /* Clinic logo sizing */
   .clinic-logo {
     max-height: 60px;
   }
+
   #clinic-header,
   #print-summary-container {
     display: none;
   }
 }
-}
-  /* --- TVC Branding Overrides --- */
+
+/* --- TVC Branding Overrides --- */
 
 /* 1. Import Branding Fonts from Google */
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Montserrat:wght@700&display=swap');
 
 /* 2. Define Brand Colors and Fonts as Variables */
 :root {
-  --tvc-blue: #005a9c;  /* Your primary navy blue */
-  --tvc-green: #8cc63f; /* Your primary bright green */
+  --tvc-blue: #005a9c;
+  /* Your primary navy blue */
+  --tvc-green: #8cc63f;
+  /* Your primary bright green */
+  --tvc-red: #F14668; /* A standard danger red */
   --font-title: 'Montserrat', sans-serif;
   --font-body: 'Lato', sans-serif;
 }
@@ -53,38 +88,45 @@ body {
   font-family: var(--font-body);
 }
 
-.title, .label {
+.title,
+.label {
   font-family: var(--font-title);
 }
 
 /* 4. Recolor Key Components to Match Brand */
-
-/* Update the main header to use your brand's blue */
 .hero.is-info {
   background-color: var(--tvc-blue);
 }
 
-/* Update the "Print" button to use your brand's blue */
 .button.is-link {
   background-color: var(--tvc-blue);
   transition: background-color 0.3s ease;
 }
+
 .button.is-link:hover {
-  background-color: #004a80; /* A slightly darker blue for hover */
+  background-color: #004a80;
+  /* A slightly darker blue for hover */
 }
 
-/* Update the "Savings" notification to use your brand's green */
+/* FIX: Add styles for BOTH success and danger notifications */
 .notification.is-success {
   background-color: var(--tvc-green);
+  color: #2b2b2b; /* Dark text for better readability on light green */
 }
-/* Make text dark on the green background for better readability */
-.notification.is-success, .notification.is-success strong {
+.notification.is-success strong {
     color: #2b2b2b;
 }
 
-/* 5. Adjust Formatting and Shapes */
+.notification.is-danger {
+  background-color: var(--tvc-red);
+  color: #fff; /* White text on red background */
+}
+.notification.is-danger strong {
+    color: #fff;
+}
 
-/* Apply a subtle border-radius to match your website's modern feel */
+
+/* 5. Adjust Formatting and Shapes */
 .button,
 .input,
 .card,
@@ -92,7 +134,6 @@ body {
 .notification {
   border-radius: 4px;
 }
-/* --- End of TVC Branding Overrides --- */
 </style>
 </head>
 <body>
