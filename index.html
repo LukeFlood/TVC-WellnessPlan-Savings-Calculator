@@ -8,6 +8,13 @@
 body { padding: 2rem; }
 .select-container { margin-top: 1rem; }
 .output { margin-top: 2rem; }
+.service-list .field.is-flex span {
+  flex: 1;
+}
+.service-list .field.is-flex input {
+  width: 5rem;
+  margin-left: 0.5rem;
+}
 .no-spinner::-webkit-inner-spin-button,
 .no-spinner::-webkit-outer-spin-button {
   -webkit-appearance: none;
@@ -19,46 +26,60 @@ body { padding: 2rem; }
 </style>
 </head>
 <body>
-<div class="container">
-  <h1 class="title">Veterinary Wellness Plan Savings</h1>
+<section class="section">
+  <div class="container">
+    <section class="hero is-info">
+      <div class="hero-body">
+        <h1 class="title">Veterinary Wellness Plan Savings</h1>
+      </div>
+    </section>
 
-  <div class="field">
-    <label class="label" for="plan-select">Select Plan</label>
-    <div class="control">
-      <div class="select">
-        <select id="plan-select">
-          <option value="" disabled selected>Select a plan</option>
-        </select>
+    <div class="card mt-5">
+      <div class="card-content">
+        <div class="field">
+          <label class="label" for="plan-select">Select Plan</label>
+          <div class="control">
+            <div class="select is-fullwidth">
+              <select id="plan-select">
+                <option value="" disabled selected>Select a plan</option>
+              </select>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div id="plan-details" style="display:none;">
-    <div class="columns">
+  <div id="plan-details" class="mt-5" style="display:none;">
+    <div class="card">
+      <div class="card-content">
+        <div class="columns">
       <div class="column">
         <label class="label">Included Services Used</label>
-        <div id="included-container" class="select-container"></div>
+        <div id="included-container" class="select-container service-list"></div>
       </div>
       <div class="column">
         <label class="label">Optional Services Received</label>
-        <div id="optional-container" class="select-container"></div>
+        <div id="optional-container" class="select-container service-list"></div>
       </div>
-    </div>
+        </div>
 
-    <div class="field">
-      <label class="label" for="additional">Outside of Plan ($)</label>
-      <div class="control">
-        <input class="input no-spinner" type="number" id="additional" min="0" step="0.01" value="0">
+        <div class="field mt-4">
+          <label class="label" for="additional">Outside of Plan ($)</label>
+          <div class="control">
+            <input class="input no-spinner" type="number" id="additional" min="0" step="0.01" value="0">
+          </div>
+        </div>
+
+        <div class="output notification is-success mt-4">
+          <p><strong>Total cost with plan:</strong> $<span id="with-plan">0.00</span></p>
+          <p><strong>Total cost without plan:</strong> $<span id="without-plan">0.00</span></p>
+          <p class="is-size-4 has-text-weight-bold"><strong>Estimated savings:</strong> $<span id="savings">0.00</span></p>
+        </div>
       </div>
-    </div>
-
-    <div class="output">
-      <p><strong>Total cost with plan:</strong> $<span id="with-plan">0.00</span></p>
-      <p><strong>Total cost without plan:</strong> $<span id="without-plan">0.00</span></p>
-      <p><strong>Estimated savings:</strong> $<span id="savings">0.00</span></p>
     </div>
   </div>
 </div>
+</section>
 
 <script>
 let plans = [];
