@@ -1,37 +1,86 @@
-body {
-  background: white;
-  color: #000;
-  font-family: Arial, sans-serif;
-}
+/**
+ * Improved Print Stylesheet for Wellness Plan Calculator
+ */
 
+/* Set standard page properties for printing */
 @page {
-  margin: 1in;
+  margin: 0.75in;
+  size: letter;
 }
 
+body {
+  font-size: 11pt; /* A good font size for printed documents */
+  background-color: #fff !important; /* Ensure a white background */
+}
+
+/* --- HIDE UNNECESSARY SCREEN ELEMENTS --- */
+/* Selectively hide the parts of the UI not needed on the printout */
+
+/* Hide the main page hero, the plan selection dropdown, and the interactive calculator details */
 #page-hero,
-#plan-details,
 #plan-select,
-.card,
-#print-button {
+#plan-details,
+.card:not(#print-summary-container .card) {
   display: none !important;
 }
 
-#print-summary-container .hero,
-#print-summary-container .card {
+/* Hide the action buttons */
+#print-button,
+#reset-button {
+  display: none !important;
+}
+
+
+/* --- SHOW & STYLE THE PRINT SUMMARY --- */
+
+/* Make sure the print summary container is the only major visible element */
+#print-summary-container {
   display: block !important;
 }
 
-#clinic-header,
-#print-summary-container {
-  display: block;
+/* Remove shadows which don't print well and add a simple border instead */
+.card, .notification {
+  box-shadow: none !important;
+  border: 1px solid #dbdbdb;
 }
 
-#print-summary-container ul {
-  list-style: none;
-  padding-left: 0;
+/* * Force the browser to print background colors and images.
+ * Many browsers disable this by default to save ink, but it's essential for your design.
+ * The user can still override this in their print settings.
+*/
+.hero, .notification {
+  -webkit-print-color-adjust: exact !important;
+  print-color-adjust: exact !important;
 }
 
-/* Logo sizing on printed summary */
+/* Explicitly set the background colors from Bulma to ensure they print */
+.hero.is-info {
+  background-color: #3E8ED0 !important;
+}
+
+.notification.is-success {
+  background-color: #48C78E !important;
+}
+
+.notification.is-danger {
+  background-color: #F14668 !important;
+}
+
+/* Make sure text inside colored elements is white so it's readable */
+.hero .title,
+.notification p,
+.notification strong {
+  color: #fff !important;
+}
+
+/* --- Final Touches --- */
+
+/* Slightly increase the logo size for better visibility on the printed page */
 .clinic-logo {
-  max-height: 60px;
+  max-height: 70px !important;
+}
+
+/* Remove underlines from links for a cleaner look */
+a {
+  text-decoration: none;
 }
