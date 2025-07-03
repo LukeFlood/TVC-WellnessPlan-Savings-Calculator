@@ -69,15 +69,19 @@
       padding: 1rem;
       border-radius: 8px;
       text-align: center;
+      transition: background-color 0.2s;
     }
     .with-plan-col {
       background-color: #f0f0f0;
     }
     .without-plan-col {
-      background-color: rgba(241,70,104,0.1);
+      background-color: rgba(0,90,156,0.1);
     }
-    .savings-col {
+    .savings-col.positive {
       background-color: rgba(140,198,63,0.1);
+    }
+    .savings-col.negative {
+      background-color: rgba(241,70,104,0.1);
     }
     .button.is-link {
       background-color: var(--tvc-blue);
@@ -85,14 +89,29 @@
     .button.is-link:hover {
       background-color: #004a80;
     }
+    a.site-link {
+      color: var(--tvc-blue);
+      text-decoration: none;
+      font-weight: 700;
+    }
+    a.site-link:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="has-text-centered mb-4">
-      <img src="assets/Logo.png" alt="Clinic Logo" class="image is-inline-block" style="max-height:80px;">
+    <div class="has-text-centered mb-2">
+      <a href="https://www.totalveterinarycare.com" target="_blank" rel="noopener">
+        <img src="assets/Logo.png" alt="Clinic Logo" style="max-height:80px;">
+      </a>
     </div>
     <h1 class="title has-text-centered">Wellness Plan Savings Calculator</h1>
+    <div class="has-text-centered mb-4">
+      <a class="site-link" href="https://www.totalveterinarycare.com" target="_blank" rel="noopener">
+        www.totalveterinarycare.com
+      </a>
+    </div>
 
     <!-- Plan Tiles -->
     <div class="card">
@@ -134,7 +153,7 @@
               <p class="heading">Without Plan</p>
               <p class="title is-4" id="without-plan">$0.00</p>
             </div>
-            <div class="summary-column savings-col">
+            <div id="savings-col" class="summary-column savings-col positive">
               <p class="heading">Savings</p>
               <p class="title is-4" id="savings">$0.00</p>
             </div>
@@ -159,6 +178,7 @@
     const withPlanEl = document.getElementById('with-plan');
     const withoutPlanEl = document.getElementById('without-plan');
     const savingsEl = document.getElementById('savings');
+    const savingsColEl = document.getElementById('savings-col');
     const printButton = document.getElementById('print-button');
 
     function formatMoney(v){ return v.toFixed(2); }
@@ -187,14 +207,18 @@
       optionalContainer.innerHTML = '';
       currentPlan.includedServices.forEach((svc, i) => {
         const wrapper = document.createElement('div');
-        wrapper.innerHTML = `<input type="number" min="0" class="included-qty input" data-index="${i}" value="0" style="width:4rem;"> <span>${svc.name}</span>`;
+        wrapper.innerHTML = `
+          <input type="number" min="0" class="included-qty input" data-index="${i}" value="0" style="width:4rem;">
+          <span>${svc.name}</span>`;
         const input = wrapper.querySelector('input');
         input.addEventListener('input', calculate);
         includedContainer.appendChild(wrapper);
       });
       currentPlan.optionalServices.forEach((svc, i) => {
         const wrapper = document.createElement('div');
-        wrapper.innerHTML = `<input type="number" min="0" class="optional-qty input" data-index="${i}" value="0" style="width:4rem;"> <span>${svc.name}</span>`;
+        wrapper.innerHTML = `
+          <input type="number" min="0" class="optional-qty input" data-index="${i}" value="0" style="width:4rem;">
+          <span>${svc.name}</span>`;
         const input = wrapper.querySelector('input');
         input.addEventListener('input', calculate);
         optionalContainer.appendChild(wrapper);
@@ -207,16 +231,12 @@
       const addCost = additional * (1 - currentPlan.percentDiscount);
       let costWith = currentPlan.annualCost + addCost;
       let costWithout = additional;
-
-      // Included services: calculate retail cost for quantity
+      // Included
       document.querySelectorAll('.included-qty').forEach(inp => {
         const qty = parseInt(inp.value) || 0;
-        if(qty > 0) {
-          costWithout += qty * currentPlan.includedServices[inp.dataset.index].retailPrice;
-        }
+        if(qty > 0) costWithout += qty * currentPlan.includedServices[inp.dataset.index].retailPrice;
       });
-
-      // Optional services
+      // Optional
       document.querySelectorAll('.optional-qty').forEach(inp => {
         const qty = parseInt(inp.value) || 0;
         if(qty > 0) {
@@ -225,11 +245,17 @@
           costWithout += qty * svc.retailPrice;
         }
       });
-
       withPlanEl.textContent = '$' + formatMoney(costWith);
       withoutPlanEl.textContent = '$' + formatMoney(costWithout);
       const save = costWithout - costWith;
       savingsEl.textContent = '$' + formatMoney(save);
+      if (save < 0) {
+        savingsColEl.classList.remove('positive');
+        savingsColEl.classList.add('negative');
+      } else {
+        savingsColEl.classList.remove('negative');
+        savingsColEl.classList.add('positive');
+      }
     }
 
     function selectPlan(idx){
