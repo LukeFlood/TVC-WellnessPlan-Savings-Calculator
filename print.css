@@ -1,0 +1,32 @@
+body {
+  background: white;
+  color: #000;
+  font-family: Arial, sans-serif;
+}
+
+@page {
+  margin: 1in;
+}
+
+.hero,
+#plan-details,
+#plan-select,
+.card,
+#print-button {
+  display: none !important;
+}
+
+#clinic-header,
+#print-summary-container {
+  display: block;
+}
+
+#print-summary-container ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.notification {
+  background: none !important;
+  border: 1px solid #000;
+}
