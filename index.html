@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <title>Wellness Plan Savings Calculator</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
-  
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Montserrat:wght@700&display=swap');
     :root {
@@ -100,17 +99,45 @@
     .button.is-link:hover {
       background-color: #004a80;
     }
-    /* Ensure colors print */
-  @media print {
-    html, body, .header-bar, .card, .summary-column, .plan-tile {
-      -webkit-print-color-adjust: exact;
-      color-adjust: exact;
-      print-color-adjust: exact;
-      background-color: inherit !important;
-      color: inherit !important;
+    /* Mobile responsiveness */
+    @media (max-width: 600px) {
+      .plan-tile {
+        flex: 1 1 100%;
+      }
+      .service-list {
+        grid-template-columns: 1fr;
+      }
+      #print-button {
+        display: block;
+        width: 100%;
+      }
+      body {
+        padding: 1rem;
+      }
+      .header-bar {
+        padding: 0.5rem 0.75rem;
+      }
+      .header-bar .title {
+        font-size: 1.25rem;
+      }
+      input.included-qty,
+      input.optional-qty {
+        width: 5rem !important;
+      }
     }
-  }
-</style>
+    /* Ensure colors in print */
+    @media print {
+      html, body, .header-bar, .card, .summary-column, .plan-tile {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        background-color: inherit !important;
+        color: inherit !important;
+      }
+      #print-button {
+        display: none !important;
+      }
+    }
+  </style>
 </head>
 <body>
   <div class="container">
@@ -179,7 +206,6 @@
   </div>
 
   <script>
-    // Fetch data and build plan tiles
     let plans = [], currentPlan = null;
     const planTilesEl = document.getElementById('plan-tiles');
     const planDetailsEl = document.getElementById('plan-details');
@@ -224,7 +250,9 @@
           <span>${svc.name}</span>`;
         const input = wrapper.querySelector('input');
         input.addEventListener('input', calculate);
-        input.addEventListener('focus', e => { if (e.target.value === '0') e.target.select(); });
+        input.addEventListener('focus', e => {
+          if (e.target.value === '0') e.target.select();
+        });
         includedContainer.appendChild(wrapper);
       });
       currentPlan.optionalServices.forEach((svc, i) => {
@@ -234,7 +262,9 @@
           <span>${svc.name}</span>`;
         const input = wrapper.querySelector('input');
         input.addEventListener('input', calculate);
-        input.addEventListener('focus', e => { if (e.target.value === '0') e.target.select(); });
+        input.addEventListener('focus', e => {
+          if (e.target.value === '0') e.target.select();
+        });
         optionalContainer.appendChild(wrapper);
       });
     }
@@ -242,16 +272,15 @@
     function calculate(){
       if(!currentPlan) return;
       const additional = parseFloat(additionalInput.value) || 0;
-      const addCost = additional * (1 - currentPlan.percentDiscount);
-      let costWith = currentPlan.annualCost + addCost;
+      let costWith = currentPlan.annualCost + additional * (1 - currentPlan.percentDiscount);
       let costWithout = additional;
       document.querySelectorAll('.included-qty').forEach(inp => {
         const qty = parseInt(inp.value) || 0;
-        if(qty > 0) costWithout += qty * currentPlan.includedServices[inp.dataset.index].retailPrice;
+        if(qty) costWithout += qty * currentPlan.includedServices[inp.dataset.index].retailPrice;
       });
       document.querySelectorAll('.optional-qty').forEach(inp => {
         const qty = parseInt(inp.value) || 0;
-        if(qty > 0) {
+        if(qty) {
           const svc = currentPlan.optionalServices[inp.dataset.index];
           costWith += qty * svc.planPrice;
           costWithout += qty * svc.retailPrice;
@@ -261,26 +290,29 @@
       withoutPlanEl.textContent = '$' + formatMoney(costWithout);
       const save = costWithout - costWith;
       savingsEl.textContent = '$' + formatMoney(save);
-      if (save < 0) {
-        savingsColEl.classList.remove('positive');
-        savingsColEl.classList.add('negative');
-      } else {
-        savingsColEl.classList.remove('negative');
-        savingsColEl.classList.add('positive');
-      }
+      savingsColEl.classList.toggle('negative', save < 0);
+      savingsColEl.classList.toggle('positive', save >= 0);
     }
 
-    function selectPlan(idx){ currentPlan = plans[idx]; planDetailsEl.style.display = 'block'; additionalInput.value = '0'; populateServices(); calculate(); }
+    function selectPlan(idx){
+      currentPlan = plans[idx];
+      planDetailsEl.style.display = 'block';
+      additionalInput.value = '0';
+      populateServices();
+      calculate();
+    }
+
     function buildPrint(){ window.print(); }
 
     fetch('data/plans.json')
       .then(r => r.json())
       .then(d => {
         const raw = d.plans || [];
-        // Desired order: Puppy/Kitten, Foundation, Ultimate with dogs on left, cats on right
         const order = ['Puppy', 'Kitten', 'Canine Foundation', 'Feline Foundation', 'Canine Ultimate', 'Feline Ultimate'];
-        plans = order.map(name => raw.find(p => p.planName === name)).filter(p => p);
-        buildPlanTiles();(); });
+        plans = order.map(name => raw.find(p => p.planName === name)).filter(Boolean);
+        buildPlanTiles();
+      });
+
     additionalInput.addEventListener('input', calculate);
     printButton.addEventListener('click', buildPrint);
   </script>
