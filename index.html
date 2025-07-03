@@ -70,7 +70,7 @@ body { padding: 2rem; }
           </div>
         </div>
 
-        <div class="output notification is-success mt-4">
+        <div id="results-notification" class="output notification is-success mt-4">
           <p><strong>Total cost with plan:</strong> $<span id="with-plan">0.00</span></p>
           <p><strong>Total cost without plan:</strong> $<span id="without-plan">0.00</span></p>
           <p class="is-size-4 has-text-weight-bold"><strong>Estimated savings:</strong> $<span id="savings">0.00</span></p>
@@ -91,6 +91,7 @@ const additionalInput = document.getElementById('additional');
 const withPlanEl = document.getElementById('with-plan');
 const withoutPlanEl = document.getElementById('without-plan');
 const savingsEl = document.getElementById('savings');
+const resultsNotificationEl = document.getElementById('results-notification');
 
 function formatMoney(value){
   return value.toFixed(2);
@@ -152,7 +153,15 @@ function calculate(){
 
   withPlanEl.textContent = formatMoney(costWithPlan);
   withoutPlanEl.textContent = formatMoney(costWithout);
-  savingsEl.textContent = formatMoney(costWithout - costWithPlan);
+  const savings = costWithout - costWithPlan;
+  savingsEl.textContent = formatMoney(savings);
+  if (savings >= 0) {
+    resultsNotificationEl.classList.add('is-success');
+    resultsNotificationEl.classList.remove('is-danger');
+  } else {
+    resultsNotificationEl.classList.add('is-danger');
+    resultsNotificationEl.classList.remove('is-success');
+  }
 }
 
 function onPlanChange(){
