@@ -273,7 +273,14 @@
     function selectPlan(idx){ currentPlan = plans[idx]; planDetailsEl.style.display = 'block'; additionalInput.value = '0'; populateServices(); calculate(); }
     function buildPrint(){ window.print(); }
 
-    fetch('data/plans.json').then(r => r.json()).then(d => { plans = d.plans || []; buildPlanTiles(); });
+    fetch('data/plans.json')
+      .then(r => r.json())
+      .then(d => {
+        const raw = d.plans || [];
+        // Desired order: Puppy/Kitten, Foundation, Ultimate with dogs on left, cats on right
+        const order = ['Puppy', 'Kitten', 'Canine Foundation', 'Feline Foundation', 'Canine Ultimate', 'Feline Ultimate'];
+        plans = order.map(name => raw.find(p => p.planName === name)).filter(p => p);
+        buildPlanTiles();(); });
     additionalInput.addEventListener('input', calculate);
     printButton.addEventListener('click', buildPrint);
   </script>
