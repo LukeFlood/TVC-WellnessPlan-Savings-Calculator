@@ -7,7 +7,6 @@ body {
 @page {
   margin: 1in;
 }
-
 .hero,
 #plan-details,
 #plan-select,
@@ -29,4 +28,8 @@ body {
 .notification {
   background: none !important;
   border: 1px solid #000;
+}
+/* Logo sizing on printed summary */
+.clinic-logo {
+  max-height: 60px;
 }
