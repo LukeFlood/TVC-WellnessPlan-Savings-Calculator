@@ -100,7 +100,17 @@
     .button.is-link:hover {
       background-color: #004a80;
     }
-  </style>
+    /* Ensure colors print */
+  @media print {
+    html, body, .header-bar, .card, .summary-column, .plan-tile {
+      -webkit-print-color-adjust: exact;
+      color-adjust: exact;
+      print-color-adjust: exact;
+      background-color: inherit !important;
+      color: inherit !important;
+    }
+  }
+</style>
 </head>
 <body>
   <div class="container">
