@@ -5,6 +5,16 @@
   <title>Wellness Plan Savings Calculator</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
   <link rel="stylesheet" href="print.css" media="print">
+  <style media="print">
+    /* Override print.css to show content */
+    .card, #plan-details, #plan-tiles {
+      display: block !important;
+    }
+    /* Hide print button in print */
+    #print-button {
+      display: none !important;
+    }
+  </style>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Montserrat:wght@700&display=swap');
     :root {
