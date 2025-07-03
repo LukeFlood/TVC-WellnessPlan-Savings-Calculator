@@ -24,13 +24,16 @@ body { padding: 2rem; }
 .no-spinner {
   -moz-appearance: textfield;
 }
-/* Clinic logo sizing */
-.clinic-logo {
-  max-height: 60px;
+@media screen {
+  /* Clinic logo sizing */
+  .clinic-logo {
+    max-height: 60px;
+  }
+  #clinic-header,
+  #print-summary-container {
+    display: none;
+  }
 }
-#clinic-header,
-#print-summary-container {
-  display: none;
 }
 </style>
 </head>
@@ -88,7 +91,7 @@ body { padding: 2rem; }
           <p><strong>Total cost without plan:</strong> $<span id="without-plan">0.00</span></p>
           <p class="is-size-4 has-text-weight-bold"><strong>Estimated savings:</strong> $<span id="savings">0.00</span></p>
         </div>
-        <button id="print-button" class="button is-link mt-4">Print Summary</button>
+<button id="print-button" type="button" class="button is-link mt-4">Print Summary</button>
       </div>
     </div>
   </div>
@@ -232,7 +235,7 @@ function buildPrintSummary(){
   }).join('');
 
   printContainer.innerHTML = `
-    <img src="assets/Logo.png" alt="Clinic Logo" class="clinic-logo mb-3">
+<img src="assets/Logo.png" alt="Clinic Logo" class="clinic-logo mb-3">
     <h1 class="title is-4">Wellness Plan Summary</h1>
     <p>${new Date().toLocaleDateString()}</p>
     <h2 class="subtitle is-5">Plan: ${currentPlan.planName}</h2>
@@ -245,6 +248,9 @@ function buildPrintSummary(){
     <p><strong>Estimated savings:</strong> $${formatMoney(costWithout - costWithPlan)}</p>
   `;
   window.print();
+window.addEventListener('afterprint', () => {
+  printContainer.innerHTML = '';
+}, { once: true });
 }
 
 fetch('data/plans.json')
