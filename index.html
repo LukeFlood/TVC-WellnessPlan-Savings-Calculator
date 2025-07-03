@@ -1,355 +1,253 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Wellness Plan Savings Calculator</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
-<link rel="stylesheet" href="print.css" media="print">
-<style>
-/* --- Base Layout & Structure --- */
-body {
-  padding: 2rem;
-}
-
-.select-container {
-  margin-top: 1rem;
-}
-
-.output {
-  margin-top: 2rem;
-}
-
-.service-list .field.is-flex span {
-  flex: 1;
-}
-
-.service-list .field.is-flex input {
-  width: 5rem;
-  margin-left: 0.5rem;
-}
-
-.no-spinner::-webkit-inner-spin-button,
-.no-spinner::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-.no-spinner {
-  -moz-appearance: textfield;
-}
-
-/* FIX: Explicitly define the columns layout to prevent stacking */
-.columns {
-    display: flex;
-    margin-left: -0.75rem;
-    margin-right: -0.75rem;
-    margin-top: -0.75rem;
-}
-.columns:not(:last-child) {
-    margin-bottom: 0.75rem;
-}
-.column {
-    display: block;
-    flex-basis: 0;
-    flex-grow: 1;
-    flex-shrink: 1;
-    padding: 0.75rem;
-}
-
-@media screen {
-  /* This class is no longer used, but kept for reference */
-  .clinic-logo {
-    max-height: 60px;
-  }
-
-  #clinic-header,
-  #print-summary-container {
-    display: none;
-  }
-}
-
-/* --- TVC Branding Overrides --- */
-
-/* 1. Import Branding Fonts from Google */
-@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Montserrat:wght@700&display=swap');
-
-/* 2. Define Brand Colors and Fonts as Variables */
-:root {
-  --tvc-blue: #005a9c;
-  /* Your primary navy blue */
-  --tvc-green: #8cc63f;
-  /* Your primary bright green */
-  --tvc-red: #F14668; /* A standard danger red */
-  --font-title: 'Montserrat', sans-serif;
-  --font-body: 'Lato', sans-serif;
-}
-
-/* 3. Apply Fonts and Base Styles */
-body {
-  font-family: var(--font-body);
-}
-
-.title,
-.label {
-  font-family: var(--font-title);
-}
-
-/* 4. Recolor Key Components to Match Brand */
-.hero.is-info {
-  background-color: var(--tvc-blue);
-}
-
-.button.is-link {
-  background-color: var(--tvc-blue);
-  transition: background-color 0.3s ease;
-}
-
-.button.is-link:hover {
-  background-color: #004a80;
-  /* A slightly darker blue for hover */
-}
-
-/* FIX: Add styles for BOTH success and danger notifications */
-.notification.is-success {
-  background-color: var(--tvc-green);
-  color: #2b2b2b; /* Dark text for better readability on light green */
-}
-.notification.is-success strong {
-    color: #2b2b2b;
-}
-
-.notification.is-danger {
-  background-color: var(--tvc-red);
-  color: #fff; /* White text on red background */
-}
-.notification.is-danger strong {
-    color: #fff;
-}
-
-
-/* 5. Adjust Formatting and Shapes */
-.button,
-.input,
-.card,
-.select select,
-.notification {
-  border-radius: 4px;
-}
-  /* Style for the new main logo */
-.clinic-logo-main {
-  max-height: 80px;
-}
-</style>
+  <meta charset="UTF-8">
+  <title>Wellness Plan Savings Calculator</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="print.css" media="print">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Montserrat:wght@700&display=swap');
+    :root {
+      --tvc-blue: #005a9c;
+      --tvc-green: #8cc63f;
+      --tvc-red: #F14668;
+    }
+    body {
+      font-family: 'Lato', sans-serif;
+      background-color: #f7f7f7;
+      padding: 2rem;
+    }
+    .title, .label, h2, h3 {
+      font-family: 'Montserrat', sans-serif;
+    }
+    .container {
+      max-width: 720px;
+      margin: auto;
+    }
+    .card {
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .plan-tiles {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .plan-tile {
+      flex: 1 1 calc(50% - 1rem);
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      text-align: center;
+      padding: 1rem;
+      cursor: pointer;
+      transition: box-shadow 0.2s, border-color 0.2s;
+    }
+    .plan-tile:hover {
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+    .plan-tile.is-selected {
+      border-color: var(--tvc-blue);
+      box-shadow: 0 0 0 2px var(--tvc-blue);
+    }
+    .service-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem 1rem;
+    }
+    .service-list div {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .summary-columns {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .summary-column {
+      flex: 1;
+      padding: 1rem;
+      border-radius: 8px;
+      text-align: center;
+    }
+    .with-plan-col {
+      background-color: #f0f0f0;
+    }
+    .without-plan-col {
+      background-color: rgba(241,70,104,0.1);
+    }
+    .savings-col {
+      background-color: rgba(140,198,63,0.1);
+    }
+    .button.is-link {
+      background-color: var(--tvc-blue);
+    }
+    .button.is-link:hover {
+      background-color: #004a80;
+    }
+  </style>
 </head>
 <body>
-<section class="section">
   <div class="container">
-
-    <div class="has-text-centered">
-      <img src="assets/Logo.png" alt="Clinic Logo" class="clinic-logo-main">
+    <div class="has-text-centered mb-4">
+      <img src="assets/Logo.png" alt="Clinic Logo" class="image is-inline-block" style="max-height:80px;">
     </div>
-    <section id="page-hero" class="hero is-info mt-4">
-      <div class="hero-body py-4 has-text-centered">
-        <h1 class="title has-text-white">
-          Wellness Plan Savings
-        </h1>
-      </div>
-    </section>
-    <div id="clinic-header" class="has-text-centered mb-4">
-      <h1 class="title is-3">Clinic Name</h1>
-    </div>
+    <h1 class="title has-text-centered">Wellness Plan Savings Calculator</h1>
 
-    <div class="card mt-5">
-      <div class="card-content">
-        <div class="field">
-          <label class="label" for="plan-select">Select Plan</label>
-          <div class="control">
-            <div class="select is-fullwidth">
-              <select id="plan-select">
-                <option value="" disabled selected>Select a plan</option>
-              </select>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  <div id="plan-details" class="mt-5" style="display:none;">
+    <!-- Plan Tiles -->
     <div class="card">
       <div class="card-content">
-        <div class="columns">
-      <div class="column">
-        <label class="label">Included Services Used</label>
-        <div id="included-container" class="select-container service-list"></div>
+        <h2 class="title is-5">Choose Your Plan</h2>
+        <div id="plan-tiles" class="plan-tiles"></div>
       </div>
-      <div class="column">
-        <label class="label">Optional Services Received</label>
-        <div id="optional-container" class="select-container service-list"></div>
-      </div>
-        </div>
+    </div>
 
-        <div class="field mt-4">
-          <label class="label" for="additional">Outside of Plan ($)</label>
-          <div class="control">
-            <input class="input no-spinner" type="number" id="additional" min="0" step="0.01" value="0">
+    <!-- Plan Details -->
+    <div id="plan-details" style="display:none;">
+      <div class="card mt-5">
+        <div class="card-content">
+          <div class="columns">
+            <div class="column">
+              <label class="label">Included Services (Qty)</label>
+              <div id="included-container" class="service-list"></div>
+            </div>
+            <div class="column">
+              <label class="label">Optional Services Received</label>
+              <div id="optional-container" class="service-list"></div>
+            </div>
+          </div>
+
+          <div class="field mt-4">
+            <label class="label">Additional Outside Plan ($)</label>
+            <div class="control">
+              <input id="additional" class="input no-spinner" type="number" min="0" step="0.01" value="0">
+            </div>
+          </div>
+
+          <!-- Summary -->
+          <div class="summary-columns">
+            <div class="summary-column with-plan-col">
+              <p class="heading">With Plan</p>
+              <p class="title is-4" id="with-plan">$0.00</p>
+            </div>
+            <div class="summary-column without-plan-col">
+              <p class="heading">Without Plan</p>
+              <p class="title is-4" id="without-plan">$0.00</p>
+            </div>
+            <div class="summary-column savings-col">
+              <p class="heading">Savings</p>
+              <p class="title is-4" id="savings">$0.00</p>
+            </div>
+          </div>
+
+          <div class="has-text-right mt-4">
+            <button id="print-button" class="button is-link">Print / Download Summary</button>
           </div>
         </div>
-
-        <div id="results-notification" class="output notification is-success mt-4">
-          <p><strong>Total cost with plan:</strong> $<span id="with-plan">0.00</span></p>
-          <p><strong>Total cost without plan:</strong> $<span id="without-plan">0.00</span></p>
-          <p class="is-size-4 has-text-weight-bold"><strong>Estimated savings:</strong> $<span id="savings">0.00</span></p>
-        </div>
-<button id="print-button" type="button" class="button is-link mt-4">Print Summary</button>
       </div>
     </div>
   </div>
-      <div id="print-summary-container" class="mt-5"></div>
-  </div>
-  </section>
 
-<script>
-let plans = [];
-let currentPlan = null;
-const planSelect = document.getElementById('plan-select');
-const includedContainer = document.getElementById('included-container');
-const optionalContainer = document.getElementById('optional-container');
-const additionalInput = document.getElementById('additional');
-const withPlanEl = document.getElementById('with-plan');
-const withoutPlanEl = document.getElementById('without-plan');
-const savingsEl = document.getElementById('savings');
-const resultsNotificationEl = document.getElementById('results-notification');
-const printContainer = document.getElementById('print-summary-container');
-const printButton = document.getElementById('print-button');
+  <script>
+    // Fetch data and build plan tiles
+    let plans = [], currentPlan = null;
+    const planTilesEl = document.getElementById('plan-tiles');
+    const planDetailsEl = document.getElementById('plan-details');
+    const includedContainer = document.getElementById('included-container');
+    const optionalContainer = document.getElementById('optional-container');
+    const additionalInput = document.getElementById('additional');
+    const withPlanEl = document.getElementById('with-plan');
+    const withoutPlanEl = document.getElementById('without-plan');
+    const savingsEl = document.getElementById('savings');
+    const printButton = document.getElementById('print-button');
 
-function formatMoney(value){
-  return value.toFixed(2);
-}
+    function formatMoney(v){ return v.toFixed(2); }
 
-function populateServices(container, services, cls){
-  container.innerHTML = '';
-  services.forEach((svc, idx) => {
-    if (isNaN(svc.retailPrice) || isNaN(svc.planPrice)) return; // skip invalid entries
-    const field = document.createElement('div');
-    field.className = 'field is-flex is-justify-content-space-between is-align-items-center mb-1';
-    const label = document.createElement('span');
-    label.textContent = `${svc.name} ($${svc.retailPrice})`;
-    const input = document.createElement('input');
-    input.type = 'number';
-    input.min = 0;
-    input.max = 9;
-    input.value = cls === 'included' ? 1 : 0;
-    input.addEventListener('focus', e => e.target.select());
-    input.dataset.index = idx;
-    input.className = `${cls}-qty input`;
-    input.style.width = '4rem';
-    input.addEventListener('input', calculate);
-    field.appendChild(label);
-    field.appendChild(input);
-    container.appendChild(field);
-  });
-}
+    function buildPlanTiles(){
+      planTilesEl.innerHTML = '';
+      plans.forEach((plan, idx) => {
+        const tile = document.createElement('div');
+        tile.className = 'plan-tile';
+        tile.dataset.index = idx;
+        tile.innerHTML = `
+          <h3 class="title is-6">${plan.planName}</h3>
+          <p>Annual: $ ${formatMoney(plan.annualCost)}</p>
+          <p>Discount: ${plan.percentDiscount*100}%</p>`;
+        tile.addEventListener('click', () => {
+          document.querySelectorAll('.plan-tile').forEach(t => t.classList.remove('is-selected'));
+          tile.classList.add('is-selected');
+          selectPlan(idx);
+        });
+        planTilesEl.appendChild(tile);
+      });
+    }
 
+    function populateServices(){
+      includedContainer.innerHTML = '';
+      optionalContainer.innerHTML = '';
+      currentPlan.includedServices.forEach((svc, i) => {
+        const wrapper = document.createElement('div');
+        wrapper.innerHTML = `<input type="number" min="0" class="included-qty input" data-index="${i}" value="0" style="width:4rem;"> <span>${svc.name}</span>`;
+        const input = wrapper.querySelector('input');
+        input.addEventListener('input', calculate);
+        includedContainer.appendChild(wrapper);
+      });
+      currentPlan.optionalServices.forEach((svc, i) => {
+        const wrapper = document.createElement('div');
+        wrapper.innerHTML = `<input type="number" min="0" class="optional-qty input" data-index="${i}" value="0" style="width:4rem;"> <span>${svc.name}</span>`;
+        const input = wrapper.querySelector('input');
+        input.addEventListener('input', calculate);
+        optionalContainer.appendChild(wrapper);
+      });
+    }
 
-function calculate(){
-  if(!currentPlan) return;
-  const additional = parseFloat(additionalInput.value) || 0;
-  const discountedAdditional = additional * (1 - (currentPlan.percentDiscount || 0));
+    function calculate(){
+      if(!currentPlan) return;
+      const additional = parseFloat(additionalInput.value) || 0;
+      const addCost = additional * (1 - currentPlan.percentDiscount);
+      let costWith = currentPlan.annualCost + addCost;
+      let costWithout = additional;
 
-  const includedInputs = includedContainer.querySelectorAll('.included-qty');
-  const optionalInputs = optionalContainer.querySelectorAll('.optional-qty');
+      // Included services: calculate retail cost for quantity
+      document.querySelectorAll('.included-qty').forEach(inp => {
+        const qty = parseInt(inp.value) || 0;
+        if(qty > 0) {
+          costWithout += qty * currentPlan.includedServices[inp.dataset.index].retailPrice;
+        }
+      });
 
-  const costWithPlan = currentPlan.annualCost +
-    Array.from(optionalInputs).reduce((sum, input) => {
-      const qty = parseInt(input.value) || 0;
-      const svc = currentPlan.optionalServices[input.dataset.index];
-      return sum + qty * (parseFloat(svc.planPrice) || 0);
-    }, 0) +
-    discountedAdditional;
+      // Optional services
+      document.querySelectorAll('.optional-qty').forEach(inp => {
+        const qty = parseInt(inp.value) || 0;
+        if(qty > 0) {
+          const svc = currentPlan.optionalServices[inp.dataset.index];
+          costWith += qty * svc.planPrice;
+          costWithout += qty * svc.retailPrice;
+        }
+      });
 
-  const costWithout =
-    Array.from(includedInputs).reduce((sum, input) => {
-      const qty = parseInt(input.value) || 0;
-      const svc = currentPlan.includedServices[input.dataset.index];
-      return sum + qty * (parseFloat(svc.retailPrice) || 0);
-    }, 0) +
-    Array.from(optionalInputs).reduce((sum, input) => {
-      const qty = parseInt(input.value) || 0;
-      const svc = currentPlan.optionalServices[input.dataset.index];
-      return sum + qty * (parseFloat(svc.retailPrice) || 0);
-    }, 0) +
-    additional;
+      withPlanEl.textContent = '$' + formatMoney(costWith);
+      withoutPlanEl.textContent = '$' + formatMoney(costWithout);
+      const save = costWithout - costWith;
+      savingsEl.textContent = '$' + formatMoney(save);
+    }
 
-  withPlanEl.textContent = formatMoney(costWithPlan);
-  withoutPlanEl.textContent = formatMoney(costWithout);
-  const savings = costWithout - costWithPlan;
-  savingsEl.textContent = formatMoney(savings);
-  if (savings >= 0) {
-    resultsNotificationEl.classList.add('is-success');
-    resultsNotificationEl.classList.remove('is-danger');
-  } else {
-    resultsNotificationEl.classList.add('is-danger');
-    resultsNotificationEl.classList.remove('is-success');
-  }
-}
+    function selectPlan(idx){
+      currentPlan = plans[idx];
+      planDetailsEl.style.display = 'block';
+      additionalInput.value = '0';
+      populateServices();
+      calculate();
+    }
 
-function onPlanChange(){
-  const idx = planSelect.value;
-  if(idx === '') return;
-  currentPlan = plans[idx];
-  document.getElementById('plan-details').style.display = 'block';
-  populateServices(includedContainer, currentPlan.includedServices, 'included');
-  populateServices(optionalContainer, currentPlan.optionalServices, 'optional');
-  additionalInput.value = 0;
-  calculate();
-}
+    function buildPrint(){ window.print(); }
 
-function buildPrintSummary() {
-  if (!currentPlan) return;
+    fetch('data/plans.json')
+      .then(r => r.json())
+      .then(d => { plans = d.plans || []; buildPlanTiles(); });
 
-  const includedInputs = includedContainer.querySelectorAll('.included-qty');
-  const optionalInputs = optionalContainer.querySelectorAll('.optional-qty');
-  const additional = parseFloat(additionalInput.value) || 0;
-  const discountedAdditional = additional * (1 - (currentPlan.percentDiscount || 0));
-
-  const costWithPlan = currentPlan.annualCost +
-    Array.from(optionalInputs).reduce((sum, input) => {
-      const qty = parseInt(input.value) || 0;
-      const svc = currentPlan.optionalServices[input.dataset.index];
-      return sum + qty * (parseFloat(svc.planPrice) || 0);
-    }, 0) +
-    discountedAdditional;
-
-  const costWithout =
-    Array.from(includedInputs).reduce((sum, input) => {
-      const qty = parseInt(input.value) || 0;
-      const svc = currentPlan.includedServices[input.dataset.index];
-      return sum + qty * (parseFloat(svc.retailPrice) || 0);
-    }, 0) +
-    Array.from(optionalInputs).reduce((sum, input) => {
-      const qty = parseInt(input.value) || 0;
-      const svc = currentPlan.optionalServices[input.dataset.index];
-      return sum + qty * (parseFloat(svc.retailPrice) || 0);
-    }, 0) +
-    additional;
-
-  const includedList = Array.from(includedInputs).map(inp => {
-    const qty = parseInt(inp.value) || 0;
-    const svc = currentPlan.includedServices[inp.dataset.index];
-    return qty > 0 ? `<li>${svc.name} x ${qty}</li>` : '';
-  }).join('');
-  const optionalList = Array.from(optionalInputs).map(inp => {
-    const qty = parseInt(input.value) || 0;
-    const svc = currentPlan.optionalServices[input.dataset.index];
-    return qty > 0 ? `<li>${svc.name} x ${qty}</li>` : '';
-  }).join('');
-
-  const savings = costWithout - costWith.plan;
-  const notificationClass = savings >= 0 ? 'is-success' : 'is-danger';
-
-  // The 'innerHTML' section below has the new, corrected header structure
-  printContainer.innerHTML = `
-    <div class="has-text-centered">
-      <img src="assets/Logo.png" alt="Clinic Logo" class="clinic-logo-main" style="max-height: 80px;">
-    </div>
-    <section class="hero is-info mt
+    additionalInput.addEventListener('input', calculate);
+    printButton.addEventListener('click', buildPrint);
+  </script>
+</body>
+</html>
