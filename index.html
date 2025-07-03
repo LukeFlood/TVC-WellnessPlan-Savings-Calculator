@@ -24,6 +24,13 @@
       max-width: 720px;
       margin: auto;
     }
+    .page-header {
+      width: 100%;
+      height: 12px;
+      background-color: var(--tvc-blue);
+      border-radius: 4px;
+      margin-bottom: 1.5rem;
+    }
     .card {
       border-radius: 8px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
@@ -89,29 +96,17 @@
     .button.is-link:hover {
       background-color: #004a80;
     }
-    a.site-link {
-      color: var(--tvc-blue);
-      text-decoration: none;
-      font-weight: 700;
-    }
-    a.site-link:hover {
-      text-decoration: underline;
-    }
   </style>
 </head>
 <body>
+  <div class="page-header"></div>
   <div class="container">
-    <div class="has-text-centered mb-2">
+    <div class="has-text-centered mb-4">
       <a href="https://www.totalveterinarycare.com" target="_blank" rel="noopener">
         <img src="assets/Logo.png" alt="Clinic Logo" style="max-height:80px;">
       </a>
     </div>
     <h1 class="title has-text-centered">Wellness Plan Savings Calculator</h1>
-    <div class="has-text-centered mb-4">
-      <a class="site-link" href="https://www.totalveterinarycare.com" target="_blank" rel="noopener">
-        www.totalveterinarycare.com
-      </a>
-    </div>
 
     <!-- Plan Tiles -->
     <div class="card">
