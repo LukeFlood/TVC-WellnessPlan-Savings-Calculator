@@ -203,21 +203,31 @@
     function buildPrint(){ window.print(); }
 
     // Load defaults CSV then plans JSON
-    fetch('data/WPDefaultQty.csv').then(r=>r.text()).then(text=>{
-      const parsed=Papa.parse(text,{header:true,skipEmptyLines:true}).data;
-      parsed.forEach(r=>{
-        const p=r.planName.trim(), s=r.serviceName.trim(), q=parseInt(r.defaultQty)||0;
-        if(!defaultsMap[p])defaultsMap[p]={}; defaultsMap[p][s]=q;
+    fetch('data/WPDefaultQty.csv')
+      .then(r => r.ok ? r.text() : Promise.reject('Default CSV not found'))
+      .then(text => {
+        const parsed = Papa.parse(text, { header: true, skipEmptyLines: true }).data;
+        parsed.forEach(r => {
+          const p = r.planName.trim(), s = r.serviceName.trim(), q = parseInt(r.defaultQty) || 0;
+          if (!defaultsMap[p]) defaultsMap[p] = {};
+          defaultsMap[p][s] = q;
+        });
+      })
+      .catch(err => console.warn('WPDefaultQty.csv load error:', err))
+      .finally(() => {
+        fetch('data/plans.json')
+          .then(r => r.json())
+          .then(d => {
+            const raw = d.plans || [];
+            const order = ['Puppy','Kitten','Canine Foundation','Feline Foundation','Canine Ultimate','Feline Ultimate'];
+            plans = order.map(name => raw.find(p => p.planName === name)).filter(Boolean);
+            buildPlanTiles();
+          })
+          .catch(err => console.error('plans.json load error:', err));
       });
-    }).then(()=>{
-      fetch('data/plans.json').then(r=>r.json()).then(d=>{
-        const raw=d.plans||[], order=['Puppy','Kitten','Canine Foundation','Feline Foundation','Canine Ultimate','Feline Ultimate'];
-        plans=order.map(name=>raw.find(p=>p.planName===name)).filter(Boolean);
-        buildPlanTiles();
-      });
-    });
 
-    additionalInput.addEventListener('input',calculate);
+    additionalInput.addEventListener('input', calculate);
+    printButton.addEventListener('click', buildPrint);('input',calculate);
     printButton.addEventListener('click',buildPrint);
   </script>
 </body>
