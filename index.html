@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <title>Wellness Plan Savings Calculator</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+<link rel="stylesheet" href="print.css" media="print">
 <style>
 body { padding: 2rem; }
 .select-container { margin-top: 1rem; }
@@ -23,6 +24,12 @@ body { padding: 2rem; }
 .no-spinner {
   -moz-appearance: textfield;
 }
+@media screen {
+  #clinic-header,
+  #print-summary-container {
+    display: none;
+  }
+}
 </style>
 </head>
 <body>
@@ -33,6 +40,9 @@ body { padding: 2rem; }
         <h1 class="title">Veterinary Wellness Plan Savings</h1>
       </div>
     </section>
+    <div id="clinic-header" class="has-text-centered mb-4">
+      <h1 class="title is-3">Clinic Name</h1>
+    </div>
 
     <div class="card mt-5">
       <div class="card-content">
@@ -75,11 +85,13 @@ body { padding: 2rem; }
           <p><strong>Total cost without plan:</strong> $<span id="without-plan">0.00</span></p>
           <p class="is-size-4 has-text-weight-bold"><strong>Estimated savings:</strong> $<span id="savings">0.00</span></p>
         </div>
+        <button id="print-button" class="button is-link mt-4">Print Summary</button>
       </div>
     </div>
   </div>
-</div>
-</section>
+      <div id="print-summary-container" class="mt-5"></div>
+  </div>
+  </section>
 
 <script>
 let plans = [];
@@ -92,6 +104,8 @@ const withPlanEl = document.getElementById('with-plan');
 const withoutPlanEl = document.getElementById('without-plan');
 const savingsEl = document.getElementById('savings');
 const resultsNotificationEl = document.getElementById('results-notification');
+const printContainer = document.getElementById('print-summary-container');
+const printButton = document.getElementById('print-button');
 
 function formatMoney(value){
   return value.toFixed(2);
@@ -175,6 +189,60 @@ function onPlanChange(){
   calculate();
 }
 
+function buildPrintSummary(){
+  if(!currentPlan) return;
+  const includedInputs = includedContainer.querySelectorAll('.included-qty');
+  const optionalInputs = optionalContainer.querySelectorAll('.optional-qty');
+  const additional = parseFloat(additionalInput.value) || 0;
+  const discountedAdditional = additional * (1 - (currentPlan.percentDiscount || 0));
+
+  const costWithPlan = currentPlan.annualCost +
+    Array.from(optionalInputs).reduce((sum, input) => {
+      const qty = parseInt(input.value) || 0;
+      const svc = currentPlan.optionalServices[input.dataset.index];
+      return sum + qty * (parseFloat(svc.planPrice) || 0);
+    }, 0) +
+    discountedAdditional;
+
+  const costWithout =
+    Array.from(includedInputs).reduce((sum, input) => {
+      const qty = parseInt(input.value) || 0;
+      const svc = currentPlan.includedServices[input.dataset.index];
+      return sum + qty * (parseFloat(svc.retailPrice) || 0);
+    }, 0) +
+    Array.from(optionalInputs).reduce((sum, input) => {
+      const qty = parseInt(input.value) || 0;
+      const svc = currentPlan.optionalServices[input.dataset.index];
+      return sum + qty * (parseFloat(svc.retailPrice) || 0);
+    }, 0) +
+    additional;
+
+  const includedList = Array.from(includedInputs).map(inp => {
+    const qty = parseInt(inp.value) || 0;
+    const svc = currentPlan.includedServices[inp.dataset.index];
+    return qty > 0 ? `<li>${svc.name} x ${qty}</li>` : '';
+  }).join('');
+  const optionalList = Array.from(optionalInputs).map(inp => {
+    const qty = parseInt(inp.value) || 0;
+    const svc = currentPlan.optionalServices[inp.dataset.index];
+    return qty > 0 ? `<li>${svc.name} x ${qty}</li>` : '';
+  }).join('');
+
+  printContainer.innerHTML = `
+    <h1 class="title is-4">Wellness Plan Summary</h1>
+    <p>${new Date().toLocaleDateString()}</p>
+    <h2 class="subtitle is-5">Plan: ${currentPlan.planName}</h2>
+    <h3 class="subtitle is-6 mt-3">Included Services Used</h3>
+    <ul>${includedList || '<li>None</li>'}</ul>
+    <h3 class="subtitle is-6 mt-3">Optional Services Received</h3>
+    <ul>${optionalList || '<li>None</li>'}</ul>
+    <p><strong>Total cost with plan:</strong> $${formatMoney(costWithPlan)}</p>
+    <p><strong>Total cost without plan:</strong> $${formatMoney(costWithout)}</p>
+    <p><strong>Estimated savings:</strong> $${formatMoney(costWithout - costWithPlan)}</p>
+  `;
+  window.print();
+}
+
 fetch('data/plans.json')
   .then(res => res.json())
   .then(data => {
@@ -190,6 +258,7 @@ fetch('data/plans.json')
 planSelect.addEventListener('change', onPlanChange);
 additionalInput.addEventListener('input', calculate);
 additionalInput.addEventListener('focus', e => e.target.select());
+printButton.addEventListener('click', buildPrintSummary);
 </script>
 </body>
 </html>
