@@ -40,7 +40,7 @@ body { padding: 2rem; }
 <body>
 <section class="section">
   <div class="container">
-    <section class="hero is-info">
+    <section id="page-hero" class="hero is-info">
       <div class="hero-body is-flex is-align-items-center">
         <img src="assets/Logo.png" alt="Clinic Logo" class="clinic-logo mr-3">
         <h1 class="title">Veterinary Wellness Plan Savings</h1>
@@ -234,18 +234,37 @@ function buildPrintSummary(){
     return qty > 0 ? `<li>${svc.name} x ${qty}</li>` : '';
   }).join('');
 
+  const savings = costWithout - costWithPlan;
+  const notificationClass = savings >= 0 ? 'is-success' : 'is-danger';
+
   printContainer.innerHTML = `
-<img src="assets/Logo.png" alt="Clinic Logo" class="clinic-logo mb-3">
-    <h1 class="title is-4">Wellness Plan Summary</h1>
-    <p>${new Date().toLocaleDateString()}</p>
-    <h2 class="subtitle is-5">Plan: ${currentPlan.planName}</h2>
-    <h3 class="subtitle is-6 mt-3">Included Services Used</h3>
-    <ul>${includedList || '<li>None</li>'}</ul>
-    <h3 class="subtitle is-6 mt-3">Optional Services Received</h3>
-    <ul>${optionalList || '<li>None</li>'}</ul>
-    <p><strong>Total cost with plan:</strong> $${formatMoney(costWithPlan)}</p>
-    <p><strong>Total cost without plan:</strong> $${formatMoney(costWithout)}</p>
-    <p><strong>Estimated savings:</strong> $${formatMoney(costWithout - costWithPlan)}</p>
+    <section class="hero is-info">
+      <div class="hero-body is-flex is-align-items-center">
+        <img src="assets/Logo.png" alt="Clinic Logo" class="clinic-logo mr-3">
+        <h1 class="title has-text-white">Veterinary Wellness Plan Savings</h1>
+      </div>
+    </section>
+    <div class="card mt-4">
+      <div class="card-content">
+        <p class="mb-2">${new Date().toLocaleDateString()}</p>
+        <h2 class="title is-4">${currentPlan.planName}</h2>
+        <div class="columns mt-4">
+          <div class="column">
+            <h3 class="subtitle is-6 mb-1">Included Services Used</h3>
+            <ul>${includedList || '<li>None</li>'}</ul>
+          </div>
+          <div class="column">
+            <h3 class="subtitle is-6 mb-1">Optional Services Received</h3>
+            <ul>${optionalList || '<li>None</li>'}</ul>
+          </div>
+        </div>
+        <div class="notification ${notificationClass} mt-4">
+          <p><strong>Total cost with plan:</strong> $${formatMoney(costWithPlan)}</p>
+          <p><strong>Total cost without plan:</strong> $${formatMoney(costWithout)}</p>
+          <p class="is-size-4 has-text-weight-bold"><strong>Estimated savings:</strong> $${formatMoney(savings)}</p>
+        </div>
+      </div>
+    </div>
   `;
   window.print();
 window.addEventListener('afterprint', () => {
