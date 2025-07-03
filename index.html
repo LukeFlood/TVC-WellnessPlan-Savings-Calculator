@@ -202,11 +202,16 @@
       optionalContainer.innerHTML = '';
       currentPlan.includedServices.forEach((svc, i) => {
         const wrapper = document.createElement('div');
+        // default quantity: 2 for comprehensive exam, 1 otherwise
+        const defaultQty = svc.name === 'WP Comprehensive Physical Exam: Biannual' ? 2 : 1;
         wrapper.innerHTML = `
-          <input type="number" min="0" class="included-qty input" data-index="${i}" value="0" style="width:4rem;">
+          <input type="number" min="0" class="included-qty input" data-index="${i}" value="${defaultQty}" style="width:4rem;">
           <span>${svc.name}</span>`;
         const input = wrapper.querySelector('input');
         input.addEventListener('input', calculate);
+        input.addEventListener('focus', e => {
+          if (e.target.value === '0') e.target.select();
+        });
         includedContainer.appendChild(wrapper);
       });
       currentPlan.optionalServices.forEach((svc, i) => {
@@ -216,6 +221,9 @@
           <span>${svc.name}</span>`;
         const input = wrapper.querySelector('input');
         input.addEventListener('input', calculate);
+        input.addEventListener('focus', e => {
+          if (e.target.value === '0') e.target.select();
+        });
         optionalContainer.appendChild(wrapper);
       });
     }
