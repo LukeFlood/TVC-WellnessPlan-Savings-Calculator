@@ -304,8 +304,9 @@ function onPlanChange(){
   calculate();
 }
 
-function buildPrintSummary(){
-  if(!currentPlan) return;
+function buildPrintSummary() {
+  if (!currentPlan) return;
+
   const includedInputs = includedContainer.querySelectorAll('.included-qty');
   const optionalInputs = optionalContainer.querySelectorAll('.optional-qty');
   const additional = parseFloat(additionalInput.value) || 0;
@@ -346,17 +347,20 @@ function buildPrintSummary(){
   const savings = costWithout - costWithPlan;
   const notificationClass = savings >= 0 ? 'is-success' : 'is-danger';
 
+  // The 'innerHTML' section below has the new, corrected header structure
   printContainer.innerHTML = `
-    <section class="hero is-info">
-      <div class="hero-body is-flex is-align-items-center">
-        <img src="assets/Logo.png" alt="Clinic Logo" class="clinic-logo mr-3">
-        <h1 class="title has-text-white">Wellness Plan Savings</h1>
+    <div class="has-text-centered">
+      <img src="assets/Logo.png" alt="Clinic Logo" class="clinic-logo-main" style="max-height: 80px;">
+    </div>
+    <section class="hero is-info mt-4">
+      <div class="hero-body py-4 has-text-centered">
+        <h1 class="title has-text-white">Veterinary Wellness Plan Savings</h1>
       </div>
     </section>
     <div class="card mt-4">
       <div class="card-content">
-        <p class="mb-2">${new Date().toLocaleDateString()}</p>
-        <h2 class="title is-4">${currentPlan.planName}</h2>
+        <p class="mb-2"><strong>Date:</strong> ${new Date().toLocaleDateString()}</p>
+        <h2 class="title is-4">${currentPlan.planName} Plan Summary</h2>
         <div class="columns mt-4">
           <div class="column">
             <h3 class="subtitle is-6 mb-1">Included Services Used</h3>
@@ -376,9 +380,11 @@ function buildPrintSummary(){
     </div>
   `;
   window.print();
-window.addEventListener('afterprint', () => {
-  printContainer.innerHTML = '';
-}, { once: true });
+  window.addEventListener('afterprint', () => {
+    printContainer.innerHTML = '';
+  }, {
+    once: true
+  });
 }
 
 fetch('data/plans.json')
