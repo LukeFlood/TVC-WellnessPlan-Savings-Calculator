@@ -220,7 +220,7 @@
             Annual: $${annual}
             <span class="has-text-weight-light">(${monthly}/mo)</span>
           </p>
-          <p>Discount: ${plan.percentDiscount * 100}%</p>
+          <p>Out of Plan Discount: ${plan.percentDiscount * 100}%</p>
         `;
         tile.addEventListener('click', () => {
           document.querySelectorAll('.plan-tile').forEach(t => t.classList.remove('is-selected'));
