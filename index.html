@@ -88,7 +88,9 @@
       body { padding: 1rem; }
       .header-bar { padding: 0.5rem 0.75rem; }
       .header-bar .title { font-size: 1.25rem; }
-      input.included-qty, input.optional-qty { width: 5rem !important; }
+      input.included-qty, input.optional-qty, input.outside-amt {
+        width: 5rem !important;
+      }
     }
     @media print {
       html, body, .header-bar, .card, .summary-column, .plan-tile {
@@ -111,12 +113,14 @@
     <div class="header-bar">
       <h1 class="title">Wellness Plan Savings Calculator</h1>
     </div>
+
     <div class="card">
       <div class="card-content">
         <h2 class="title is-5">Choose Your Plan</h2>
         <div id="plan-tiles" class="plan-tiles"></div>
       </div>
     </div>
+
     <div id="plan-details" style="display:none;">
       <div class="card mt-5">
         <div class="card-content">
@@ -130,12 +134,40 @@
               <div id="optional-container" class="service-list"></div>
             </div>
           </div>
+
+          <!-- NEW Outside Plan Services Section -->
           <div class="field mt-4">
-            <label class="label">Additional Outside Plan ($)</label>
-            <div class="control">
-              <input id="additional" class="input no-spinner" type="number" min="0" step="0.01" value="0">
+            <label class="label">Additional Outside Plan Services</label>
+            <div id="outside-container">
+              <!-- Repeat these three blocks -->
+              <div class="columns is-mobile">
+                <div class="column is-two-thirds">
+                  <input type="text" class="input outside-desc" placeholder="Description">
+                </div>
+                <div class="column">
+                  <input type="number" class="input outside-amt" placeholder="Price" min="0" step="0.01" value="0">
+                </div>
+              </div>
+              <div class="columns is-mobile">
+                <div class="column is-two-thirds">
+                  <input type="text" class="input outside-desc" placeholder="Description">
+                </div>
+                <div class="column">
+                  <input type="number" class="input outside-amt" placeholder="Price" min="0" step="0.01" value="0">
+                </div>
+              </div>
+              <div class="columns is-mobile">
+                <div class="column is-two-thirds">
+                  <input type="text" class="input outside-desc" placeholder="Description">
+                </div>
+                <div class="column">
+                  <input type="number" class="input outside-amt" placeholder="Price" min="0" step="0.01" value="0">
+                </div>
+              </div>
             </div>
           </div>
+          <!-- END Outside Plan Services -->
+
           <div class="summary-columns">
             <div class="summary-column with-plan-col">
               <p class="label">With Plan</p>
@@ -150,6 +182,7 @@
               <p class="title is-4" id="savings">$0.00</p>
             </div>
           </div>
+
           <div class="has-text-right mt-4">
             <button id="print-button" class="button is-link">Print / Download Summary</button>
           </div>
@@ -157,18 +190,19 @@
       </div>
     </div>
   </div>
+
   <script>
     let plans = [], currentPlan = null, defaultsMap = {};
     const planTilesEl = document.getElementById('plan-tiles');
     const planDetailsEl = document.getElementById('plan-details');
     const includedContainer = document.getElementById('included-container');
     const optionalContainer = document.getElementById('optional-container');
-    const additionalInput = document.getElementById('additional');
     const withPlanEl = document.getElementById('with-plan');
     const withoutPlanEl = document.getElementById('without-plan');
     const savingsEl = document.getElementById('savings');
     const savingsColEl = document.getElementById('savings-col');
     const printButton = document.getElementById('print-button');
+    const outsideContainer = document.getElementById('outside-container');
 
     function formatMoney(v){ return v.toFixed(2); }
 
@@ -202,10 +236,11 @@
       optionalContainer.innerHTML = '';
       currentPlan.includedServices.forEach((svc, i) => {
         const wrapper = document.createElement('div');
-        const def = defaultsMap[currentPlan.planName] && defaultsMap[currentPlan.planName][svc.name] != null
-          ? defaultsMap[currentPlan.planName][svc.name]
-          : 1;
-        wrapper.innerHTML = `<input type="number" min="0" class="included-qty input" data-index="${i}" value="${def}" style="width:4rem;"><span>${svc.name}</span>`;
+        const def = defaultsMap[currentPlan.planName]?.[svc.name] ?? 1;
+        wrapper.innerHTML = `
+          <input type="number" min="0" class="included-qty input" data-index="${i}" value="${def}" style="width:4rem;">
+          <span>${svc.name}</span>
+        `;
         const inp = wrapper.querySelector('input');
         inp.addEventListener('input', calculate);
         inp.addEventListener('focus', e => { if (e.target.value === '0') e.target.select(); });
@@ -213,7 +248,10 @@
       });
       currentPlan.optionalServices.forEach((svc, i) => {
         const wrapper = document.createElement('div');
-        wrapper.innerHTML = `<input type="number" min="0" class="optional-qty input" data-index="${i}" value="0" style="width:4rem;"><span>${svc.name}</span>`;
+        wrapper.innerHTML = `
+          <input type="number" min="0" class="optional-qty input" data-index="${i}" value="0" style="width:4rem;">
+          <span>${svc.name}</span>
+        `;
         const inp = wrapper.querySelector('input');
         inp.addEventListener('input', calculate);
         inp.addEventListener('focus', e => { if (e.target.value === '0') e.target.select(); });
@@ -223,26 +261,39 @@
 
     function calculate(){
       if (!currentPlan) return;
-      const additional = parseFloat(additionalInput.value) || 0;
-      let costWith = currentPlan.annualCost + additional * (1 - currentPlan.percentDiscount);
-      let costWithout = additional;
+
+      // Sum outside-plan prices
+      let outsideTotal = 0;
+      outsideContainer.querySelectorAll('.outside-amt').forEach(inp => {
+        outsideTotal += parseFloat(inp.value) || 0;
+      });
+
+      // Base costs
+      let costWith = currentPlan.annualCost + outsideTotal * (1 - currentPlan.percentDiscount);
+      let costWithout = outsideTotal;
+
+      // Included services
       document.querySelectorAll('.included-qty').forEach(inp => {
         const q = parseInt(inp.value) || 0;
-        const s = currentPlan.includedServices[inp.dataset.index];
-        costWith += q * s.planPrice;
-        costWithout += q * s.retailPrice;
+        const svc = currentPlan.includedServices[inp.dataset.index];
+        costWith += q * svc.planPrice;
+        costWithout += q * svc.retailPrice;
       });
+
+      // Optional services
       document.querySelectorAll('.optional-qty').forEach(inp => {
         const q = parseInt(inp.value) || 0;
-        const s = currentPlan.optionalServices[inp.dataset.index];
-        costWith += q * s.planPrice;
-        costWithout += q * s.retailPrice;
+        const svc = currentPlan.optionalServices[inp.dataset.index];
+        costWith += q * svc.planPrice;
+        costWithout += q * svc.retailPrice;
       });
-      // Display annual + monthly for “With Plan”
+
+      // Display results (annual + monthly)
       const ann = formatMoney(costWith);
       const mon = formatMoney(costWith / 12);
       withPlanEl.innerHTML = `$${ann} <span class="is-size-6 has-text-weight-light">(${mon}/mo)</span>`;
       withoutPlanEl.textContent = '$' + formatMoney(costWithout);
+
       const save = costWithout - costWith;
       savingsEl.textContent = '$' + formatMoney(save);
       savingsColEl.classList.toggle('negative', save < 0);
@@ -254,7 +305,12 @@
       planDetailsEl.style.display = 'block';
       document.querySelectorAll('.plan-tile').forEach(t => t.classList.remove('is-selected'));
       document.querySelector(`.plan-tile[data-index="${idx}"]`).classList.add('is-selected');
-      additionalInput.value = '0';
+      // reset inputs
+      // clear outside descriptions/prices
+      outsideContainer.querySelectorAll('input').forEach(inp => {
+        if (inp.classList.contains('outside-amt')) inp.value = '0';
+        else inp.value = '';
+      });
       populateServices();
       calculate();
     }
@@ -268,7 +324,7 @@
         const parsed = Papa.parse(text, { header: true, skipEmptyLines: true }).data;
         parsed.forEach(r => {
           const p = r.planName.trim(), s = r.serviceName.trim(), q = parseInt(r.defaultQty) || 0;
-          if (!defaultsMap[p]) defaultsMap[p] = {};
+          defaultsMap[p] = defaultsMap[p] || {};
           defaultsMap[p][s] = q;
         });
       })
@@ -285,7 +341,8 @@
           .catch(err => console.error('plans.json load error:', err));
       });
 
-    additionalInput.addEventListener('input', calculate);
+    // Global listeners
+    outsideContainer.addEventListener('input', calculate);
     printButton.addEventListener('click', buildPrint);
   </script>
 </body>
