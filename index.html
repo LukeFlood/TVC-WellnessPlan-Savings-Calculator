@@ -26,18 +26,11 @@
     }
     .header-bar {
       background-color: var(--tvc-blue);
-      border-radius: 4px;
-      margin: 0 auto 1.5rem;
-      padding: 0.75rem 1rem;
-      text-align: center;
-    }
-    .header-bar .title {
-      color: white;
-      margin: 0;
-    }
-    .card {
+      padding: 1rem;
+      color: #fff;
       border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      margin-bottom: 1.5rem;
+      text-align: center;
     }
     .plan-tiles {
       display: flex;
@@ -139,14 +132,27 @@
           </div>
           <div class="field mt-4">
             <label class="label">Additional Outside Plan ($)</label>
-            <div class="control"><input id="additional" class="input no-spinner" type="number" min="0" step="0.01" value="0"></div>
+            <div class="control">
+              <input id="additional" class="input no-spinner" type="number" min="0" step="0.01" value="0">
+            </div>
           </div>
           <div class="summary-columns">
-            <div class="summary-column with-plan-col"><p class="heading">With Plan</p><p class="title is-4" id="with-plan">$0.00</p></div>
-            <div class="summary-column without-plan-col"><p class="heading">Without Plan</p><p class="title is-4" id="without-plan">$0.00</p></div>
-            <div id="savings-col" class="summary-column savings-col positive"><p class="heading">Savings</p><p class="title is-4" id="savings">$0.00</p></div>
+            <div class="summary-column with-plan-col">
+              <p class="label">With Plan</p>
+              <p class="title is-4" id="with-plan">$0.00</p>
+            </div>
+            <div class="summary-column without-plan-col">
+              <p class="label">Without Plan</p>
+              <p class="title is-4" id="without-plan">$0.00</p>
+            </div>
+            <div id="savings-col" class="summary-column savings-col">
+              <p class="label">Savings</p>
+              <p class="title is-4" id="savings">$0.00</p>
+            </div>
           </div>
-          <div class="has-text-right mt-4"><button id="print-button" class="button is-link">Print / Download Summary</button></div>
+          <div class="has-text-right mt-4">
+            <button id="print-button" class="button is-link">Print / Download Summary</button>
+          </div>
         </div>
       </div>
     </div>
@@ -165,44 +171,97 @@
     const printButton = document.getElementById('print-button');
 
     function formatMoney(v){ return v.toFixed(2); }
+
     function buildPlanTiles(){
       planTilesEl.innerHTML = '';
-      plans.forEach((plan, idx)=>{
-        const tile=document.createElement('div'); tile.className='plan-tile'; tile.dataset.index=idx;
-        tile.innerHTML=`<h3 class="title is-6">${plan.planName}</h3><p>Annual: $ ${formatMoney(plan.annualCost)}</p><p>Discount: ${plan.percentDiscount*100}%</p>`;
-        tile.addEventListener('click',()=>{document.querySelectorAll('.plan-tile').forEach(t=>t.classList.remove('is-selected'));tile.classList.add('is-selected');selectPlan(idx);});
+      plans.forEach((plan, idx) => {
+        const annual = formatMoney(plan.annualCost);
+        const monthly = formatMoney(plan.annualCost / 12);
+        const tile = document.createElement('div');
+        tile.className = 'plan-tile';
+        tile.dataset.index = idx;
+        tile.innerHTML = `
+          <h3 class="title is-6">${plan.planName}</h3>
+          <p>
+            Annual: $${annual}
+            <span class="has-text-weight-light">(${monthly}/mo)</span>
+          </p>
+          <p>Discount: ${plan.percentDiscount * 100}%</p>
+        `;
+        tile.addEventListener('click', () => {
+          document.querySelectorAll('.plan-tile').forEach(t => t.classList.remove('is-selected'));
+          tile.classList.add('is-selected');
+          selectPlan(idx);
+        });
         planTilesEl.appendChild(tile);
       });
     }
+
     function populateServices(){
-      includedContainer.innerHTML=''; optionalContainer.innerHTML='';
-      currentPlan.includedServices.forEach((svc,i)=>{
-        const wrapper=document.createElement('div');
-        const def=defaultsMap[currentPlan.planName]&&defaultsMap[currentPlan.planName][svc.name]!=null?defaultsMap[currentPlan.planName][svc.name]:1;
-        wrapper.innerHTML=`<input type="number" min="0" class="included-qty input" data-index="${i}" value="${def}" style="width:4rem;"><span>${svc.name}</span>`;
-        const inp=wrapper.querySelector('input'); inp.addEventListener('input',calculate); inp.addEventListener('focus',e=>{if(e.target.value==='0')e.target.select();});
+      includedContainer.innerHTML = '';
+      optionalContainer.innerHTML = '';
+      currentPlan.includedServices.forEach((svc, i) => {
+        const wrapper = document.createElement('div');
+        const def = defaultsMap[currentPlan.planName] && defaultsMap[currentPlan.planName][svc.name] != null
+          ? defaultsMap[currentPlan.planName][svc.name]
+          : 1;
+        wrapper.innerHTML = `<input type="number" min="0" class="included-qty input" data-index="${i}" value="${def}" style="width:4rem;"><span>${svc.name}</span>`;
+        const inp = wrapper.querySelector('input');
+        inp.addEventListener('input', calculate);
+        inp.addEventListener('focus', e => { if (e.target.value === '0') e.target.select(); });
         includedContainer.appendChild(wrapper);
       });
-      currentPlan.optionalServices.forEach((svc,i)=>{
-        const wrapper=document.createElement('div');
-        wrapper.innerHTML=`<input type="number" min="0" class="optional-qty input" data-index="${i}" value="0" style="width:4rem;"><span>${svc.name}</span>`;
-        const inp=wrapper.querySelector('input'); inp.addEventListener('input',calculate); inp.addEventListener('focus',e=>{if(e.target.value==='0')e.target.select();});
+      currentPlan.optionalServices.forEach((svc, i) => {
+        const wrapper = document.createElement('div');
+        wrapper.innerHTML = `<input type="number" min="0" class="optional-qty input" data-index="${i}" value="0" style="width:4rem;"><span>${svc.name}</span>`;
+        const inp = wrapper.querySelector('input');
+        inp.addEventListener('input', calculate);
+        inp.addEventListener('focus', e => { if (e.target.value === '0') e.target.select(); });
         optionalContainer.appendChild(wrapper);
       });
     }
+
     function calculate(){
-      if(!currentPlan)return; const additional=parseFloat(additionalInput.value)||0;
-      let costWith=currentPlan.annualCost+additional*(1-currentPlan.percentDiscount), costWithout=additional;
-      document.querySelectorAll('.included-qty').forEach(inp=>{const q=parseInt(inp.value)||0; if(q)costWithout+=q*currentPlan.includedServices[inp.dataset.index].retailPrice;});
-      document.querySelectorAll('.optional-qty').forEach(inp=>{const q=parseInt(inp.value)||0; if(q){const s=currentPlan.optionalServices[inp.dataset.index]; costWith+=q*s.planPrice; costWithout+=q*s.retailPrice;}});
-      withPlanEl.textContent='$'+formatMoney(costWith); withoutPlanEl.textContent='$'+formatMoney(costWithout);
-      const save=costWithout-costWith; savingsEl.textContent='$'+formatMoney(save);
-      savingsColEl.classList.toggle('negative', save<0); savingsColEl.classList.toggle('positive', save>=0);
+      if (!currentPlan) return;
+      const additional = parseFloat(additionalInput.value) || 0;
+      let costWith = currentPlan.annualCost + additional * (1 - currentPlan.percentDiscount);
+      let costWithout = additional;
+      document.querySelectorAll('.included-qty').forEach(inp => {
+        const q = parseInt(inp.value) || 0;
+        const s = currentPlan.includedServices[inp.dataset.index];
+        costWith += q * s.planPrice;
+        costWithout += q * s.retailPrice;
+      });
+      document.querySelectorAll('.optional-qty').forEach(inp => {
+        const q = parseInt(inp.value) || 0;
+        const s = currentPlan.optionalServices[inp.dataset.index];
+        costWith += q * s.planPrice;
+        costWithout += q * s.retailPrice;
+      });
+      // Display annual + monthly for “With Plan”
+      const ann = formatMoney(costWith);
+      const mon = formatMoney(costWith / 12);
+      withPlanEl.innerHTML = `$${ann} <span class="is-size-6 has-text-weight-light">(${mon}/mo)</span>`;
+      withoutPlanEl.textContent = '$' + formatMoney(costWithout);
+      const save = costWithout - costWith;
+      savingsEl.textContent = '$' + formatMoney(save);
+      savingsColEl.classList.toggle('negative', save < 0);
+      savingsColEl.classList.toggle('positive', save >= 0);
     }
-    function selectPlan(idx){ currentPlan=plans[idx]; planDetailsEl.style.display='block'; additionalInput.value='0'; populateServices(); calculate(); }
+
+    function selectPlan(idx){
+      currentPlan = plans[idx];
+      planDetailsEl.style.display = 'block';
+      document.querySelectorAll('.plan-tile').forEach(t => t.classList.remove('is-selected'));
+      document.querySelector(`.plan-tile[data-index="${idx}"]`).classList.add('is-selected');
+      additionalInput.value = '0';
+      populateServices();
+      calculate();
+    }
+
     function buildPrint(){ window.print(); }
 
-    // Load defaults CSV then plans JSON
+    // Load defaults then plans
     fetch('data/WPDefaultQty.csv')
       .then(r => r.ok ? r.text() : Promise.reject('Default CSV not found'))
       .then(text => {
@@ -226,9 +285,8 @@
           .catch(err => console.error('plans.json load error:', err));
       });
 
-        additionalInput.addEventListener('input', calculate);
-    printButton.addEventListener('click', buildPrint);('input',calculate);
-    printButton.addEventListener('click',buildPrint);
+    additionalInput.addEventListener('input', calculate);
+    printButton.addEventListener('click', buildPrint);
   </script>
 </body>
 </html>
